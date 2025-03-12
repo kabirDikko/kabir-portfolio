@@ -3,50 +3,24 @@ import Layout from "../layouts/Layout.astro";
 import SectionHeading from "../components/SectionHeading.astro";
 import BlogCard from "../components/BlogCard.astro";
 import ProjectCard from "../components/ProjectCard.astro";
+import { getCollection } from "astro:content";
 
-// Sample blog posts for home page
-const SAMPLE_BLOGS = [
-  {
-    title: "Kubernetes: Scaling Microservices in Production",
-    excerpt:
-      "Learn how to effectively scale your microservices architecture in a production environment using Kubernetes.",
-    date: "Jan 15, 2024",
-    readTime: "8 min",
-    category: "Kubernetes",
-    slug: "kubernetes-scaling-microservices",
-    imageUrl: "/images/kubernetes-microservices.jpg",
-  },
-  {
-    title: "CI/CD Pipeline Optimization Techniques",
-    excerpt:
-      "Discover advanced techniques to optimize your CI/CD pipelines for faster builds and deployments.",
-    date: "Dec 5, 2023",
-    readTime: "6 min",
-    category: "CI/CD",
-    slug: "cicd-pipeline-optimization",
-    imageUrl: "/images/cicd-pipeline.jpg",
-  },
-];
+// Get latest blog posts from content collection
+const allBlogPosts = await getCollection("blog");
+const latestBlogPosts = allBlogPosts
+  .sort(
+    (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+  )
+  .slice(0, 2);
 
-// Sample projects for home page
-const SAMPLE_PROJECTS = [
-  {
-    title: "AI Situational Analysis Tool for UNHCR",
-    description:
-      "Collaborated on web applications enabling 2,000+ UN staff to create and analyze documents in real-time using Azure-hosted OpenAI models and SharePoint integration.",
-    tags: ["Azure", "Terraform", "React", "Python", "Azure DevOps"],
-    repoUrl: "https://github.com/kabirdikko",
-    imageUrl: "/images/ai-analysis-tool.jpg",
-  },
-  {
-    title: "Kubernetes High-Performance Cluster",
-    description:
-      "Designed and deployed a secure Kubernetes cluster on AWS processing 80,000+ messages per minute using Terraform, Helm and KEDA autoscaling.",
-    tags: ["Kubernetes", "AWS", "Terraform", "Helm", "KEDA"],
-    repoUrl: "https://github.com/kabirdikko",
-    imageUrl: "/images/kubernetes-cluster.jpg",
-  },
-];
+// Get latest projects from content collection
+const allProjects = await getCollection("projects");
+const latestProjects = allProjects
+  .sort(
+    (a, b) =>
+      new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime()
+  )
+  .slice(0, 2);
 ---
 
 <Layout title="Kabir Dikko - Cloud Engineer">
@@ -257,7 +231,18 @@ const SAMPLE_PROJECTS = [
       </SectionHeading>
 
       <div class="grid md:grid-cols-2 gap-6">
-        {SAMPLE_PROJECTS.map((project) => <ProjectCard {...project} />)}
+        {
+          latestProjects.map((project) => (
+            <ProjectCard
+              title={project.data.title}
+              description={project.data.description}
+              imageUrl={project.data.heroImage}
+              tags={project.data.tags}
+              repoUrl={project.data.repoUrl}
+              liveUrl={project.data.liveUrl}
+            />
+          ))
+        }
       </div>
     </section>
 
@@ -287,7 +272,19 @@ const SAMPLE_PROJECTS = [
       </SectionHeading>
 
       <div class="grid md:grid-cols-2 gap-6">
-        {SAMPLE_BLOGS.map((blog) => <BlogCard {...blog} />)}
+        {
+          latestBlogPosts.map((post) => (
+            <BlogCard
+              title={post.data.title}
+              excerpt={post.data.excerpt}
+              date={post.data.date}
+              readTime={`${Math.ceil(post.data.excerpt.length / 500)} min read`}
+              category={post.data.category}
+              slug={post.slug}
+              imageUrl={post.data.image}
+            />
+          ))
+        }
       </div>
     </section>
   </div>
