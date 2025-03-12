@@ -1,0 +1,30 @@
+{
+  "name": "kabir-portfolio",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Kabir Dikko's DevOps engineer portfolio website",
+  "author": "Kabir Dikko",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^4.1.1",
+    "@astrojs/react": "^4.2.1",
+    "@astrojs/tailwind": "^6.0.0",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "astro": "^5.4.3",
+    "lucide-astro": "^0.479.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tailwindcss": "^3.4.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.10",
+    "typescript": "^5.3.3"
+  }
+}

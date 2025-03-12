@@ -1,0 +1,30 @@
+---
+interface Props {
+  title: string;
+  subtitle?: string;
+  alignment?: "left" | "center" | "right";
+}
+
+const { title, subtitle, alignment = "left" } = Astro.props;
+
+const alignmentClasses = {
+  left: "text-left",
+  center: "text-center mx-auto",
+  right: "text-right ml-auto",
+};
+---
+
+<div class:list={["mb-10", alignmentClasses[alignment]]}>
+  <h2 class="text-3xl font-bold mb-3 text-foreground inline-flex items-center">
+    <span class="inline-block mr-2 w-1.5 h-6 bg-primary rounded-full opacity-80"
+    ></span>
+    <span class="inline-block">{title}</span>
+  </h2>
+  {
+    subtitle && (
+      <p class="text-lg text-muted-foreground max-w-2xl">{subtitle}</p>
+    )
+  }
+  <slot />
+</div>
+

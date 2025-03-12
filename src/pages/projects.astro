@@ -1,0 +1,509 @@
+---
+import Layout from "../layouts/Layout.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import { getCollection } from "astro:content";
+
+// Get projects from the content collection
+const allProjects = await getCollection("projects");
+
+// Sort projects by date (newest first)
+const sortedProjects = allProjects.sort((a, b) => {
+  return (
+    new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime()
+  );
+});
+
+// Get unique technologies from all project tags for filtering
+const technologies = [
+  ...new Set(sortedProjects.flatMap((project) => project.data.tags)),
+];
+
+// Add some sample projects if we don't have enough content projects yet
+const allProjectsData =
+  sortedProjects.length >= 4
+    ? sortedProjects
+    : [
+        ...sortedProjects,
+        {
+          data: {
+            title: "Multi-Cloud Cost Optimization Tool",
+            description:
+              "A tool to analyze and optimize cloud costs across AWS, Azure, and GCP, identifying unused resources and recommending optimizations.",
+            heroImage:
+              "https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?q=80&w=1000&auto=format&fit=crop",
+            tags: ["Python", "React", "AWS", "Azure", "GCP"],
+            repoUrl: "https://github.com/kabirdikko/cloud-cost-optimizer",
+            liveUrl: "https://cost-optimizer.example.com",
+          },
+          slug: "multi-cloud-cost-optimization",
+        },
+        {
+          data: {
+            title: "Secure CI/CD Pipeline Framework",
+            description:
+              "A framework for building secure, compliant CI/CD pipelines with integrated security scanning and policy enforcement.",
+            heroImage:
+              "https://images.unsplash.com/photo-1545987796-200677ee1011?q=80&w=1000&auto=format&fit=crop",
+            tags: ["Jenkins", "Docker", "Security", "DevSecOps"],
+            repoUrl: "https://github.com/kabirdikko/secure-cicd",
+            liveUrl: "https://secure-cicd.example.com",
+          },
+          slug: "secure-cicd-pipeline",
+        },
+        {
+          data: {
+            title: "Infrastructure Drift Detection System",
+            description:
+              "A system that detects and alerts on infrastructure drift, ensuring that cloud resources stay in compliance with IaC definitions.",
+            heroImage:
+              "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1000&auto=format&fit=crop",
+            tags: ["Terraform", "AWS", "CloudWatch", "Python"],
+            repoUrl: "https://github.com/kabirdikko/drift-detector",
+            liveUrl: "https://drift-detector.example.com",
+          },
+          slug: "infrastructure-drift-detection",
+        },
+        {
+          data: {
+            title: "Microservices Deployment Framework",
+            description:
+              "A framework for deploying, scaling, and managing microservices across multiple Kubernetes clusters and cloud providers.",
+            heroImage:
+              "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1000&auto=format&fit=crop",
+            tags: ["Kubernetes", "Helm", "ArgoCD", "GitOps"],
+            repoUrl: "https://github.com/kabirdikko/microservices-framework",
+            liveUrl: "https://ms-framework.example.com",
+          },
+          slug: "microservices-deployment-framework",
+        },
+      ];
+
+// Pagination configuration
+const PROJECTS_PER_PAGE = 6;
+const currentPage = parseInt(Astro.url.searchParams.get("page") || "1");
+const totalPages = Math.ceil(allProjectsData.length / PROJECTS_PER_PAGE);
+const paginatedProjects = allProjectsData.slice(
+  (currentPage - 1) * PROJECTS_PER_PAGE,
+  currentPage * PROJECTS_PER_PAGE
+);
+
+// Generate page URLs
+const createPageUrl = (pageNum: number) => {
+  const url = new URL(Astro.url);
+  url.searchParams.set("page", pageNum.toString());
+  return url.pathname + url.search;
+};
+
+// Generate pagination items
+const paginationItems = [];
+
+// Previous button
+if (currentPage > 1) {
+  paginationItems.push({
+    type: "prev",
+    href: createPageUrl(currentPage - 1),
+  });
+}
+
+// Page numbers
+for (let i = 1; i <= totalPages; i++) {
+  // Show first page, last page, current page, and pages around current page
+  if (i === 1 || i === totalPages || Math.abs(i - currentPage) <= 1) {
+    paginationItems.push({
+      type: "page",
+      number: i,
+      isCurrent: i === currentPage,
+      href: createPageUrl(i),
+    });
+  } else if (
+    (i === 2 && currentPage > 3) ||
+    (i === totalPages - 1 && currentPage < totalPages - 2)
+  ) {
+    // Add ellipsis
+    paginationItems.push({
+      type: "ellipsis",
+    });
+  }
+}
+
+// Next button
+if (currentPage < totalPages) {
+  paginationItems.push({
+    type: "next",
+    href: createPageUrl(currentPage + 1),
+  });
+}
+---
+
+<Layout title="Projects - Kabir Dikko">
+  <div class="page-container">
+    <SectionHeading
+      title="DevOps & Cloud Projects"
+      subtitle="A showcase of my key projects in cloud infrastructure, automation, and DevOps solutions."
+    />
+
+    <div
+      class="my-12 flex items-center justify-center flex-wrap gap-2"
+      id="filter-buttons"
+    >
+      <button
+        data-filter="all"
+        class="filter-btn active px-4 py-2 bg-primary text-primary-foreground rounded-full text-sm font-medium"
+        >All</button
+      >
+      {
+        technologies.map((tech) => (
+          <button
+            data-filter={tech}
+            class="filter-btn px-4 py-2 bg-accent hover:bg-primary hover:text-primary-foreground transition-colors rounded-full text-sm font-medium"
+          >
+            {tech}
+          </button>
+        ))
+      }
+    </div>
+
+    <div class="mb-8">
+      <form class="flex gap-2" id="search-form">
+        <input
+          type="text"
+          id="search-input"
+          placeholder="Search projects..."
+          class="flex-1 px-4 py-2 rounded-lg border border-border bg-transparent focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+        />
+        <button
+          type="submit"
+          class="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="w-4 h-4"
+            ><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"
+            ></path></svg
+          >
+        </button>
+      </form>
+    </div>
+
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+      id="projects-grid"
+    >
+      {
+        paginatedProjects.map((project) => (
+          <div
+            class="relative group project-card"
+            data-tags={JSON.stringify(project.data.tags)}
+          >
+            <ProjectCard
+              title={project.data.title}
+              description={project.data.description}
+              imageUrl={project.data.heroImage}
+              tags={project.data.tags}
+              repoUrl={project.data.repoUrl}
+              liveUrl={project.data.liveUrl}
+            />
+            {project.slug && (
+              <a
+                href={`/project/${project.slug}`}
+                class="absolute inset-0 z-10"
+                aria-label={`View ${project.data.title} details`}
+              />
+            )}
+          </div>
+        ))
+      }
+    </div>
+
+    {
+      totalPages > 1 && (
+        <div class="flex justify-center mt-12">
+          <div class="flex items-center gap-2">
+            {paginationItems.map((item) => {
+              if (item.type === "prev") {
+                return (
+                  <a
+                    href={item.href}
+                    class="w-10 h-10 flex items-center justify-center rounded-full bg-accent hover:bg-primary hover:text-primary-foreground transition-colors"
+                    aria-label="Previous page"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="w-4 h-4"
+                    >
+                      <path d="m15 18-6-6 6-6" />
+                    </svg>
+                  </a>
+                );
+              } else if (item.type === "next") {
+                return (
+                  <a
+                    href={item.href}
+                    class="w-10 h-10 flex items-center justify-center rounded-full bg-accent hover:bg-primary hover:text-primary-foreground transition-colors"
+                    aria-label="Next page"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="w-4 h-4"
+                    >
+                      <path d="m9 18 6-6-6-6" />
+                    </svg>
+                  </a>
+                );
+              } else if (item.type === "page") {
+                return (
+                  <a
+                    href={item.href}
+                    class={`w-10 h-10 flex items-center justify-center rounded-full ${
+                      item.isCurrent
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-accent hover:bg-primary hover:text-primary-foreground transition-colors"
+                    }`}
+                  >
+                    {item.number}
+                  </a>
+                );
+              } else if (item.type === "ellipsis") {
+                return (
+                  <span class="w-10 h-10 flex items-center justify-center">
+                    ...
+                  </span>
+                );
+              }
+              return null;
+            })}
+          </div>
+        </div>
+      )
+    }
+  </div>
+</Layout>
+
+<script>
+  // Add animation on scroll
+  document.addEventListener("DOMContentLoaded", () => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("show");
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    document.querySelectorAll(".grid > div").forEach((card) => {
+      card.classList.add("fade-up");
+      observer.observe(card);
+    });
+
+    // Filter functionality
+    const projectCards =
+      document.querySelectorAll<HTMLElement>(".project-card");
+    const filterButtons =
+      document.querySelectorAll<HTMLButtonElement>(".filter-btn");
+    const allButton = document.querySelector<HTMLButtonElement>(
+      '[data-filter="all"]'
+    );
+    const searchInput = document.getElementById(
+      "search-input"
+    ) as HTMLInputElement;
+    const searchForm = document.getElementById(
+      "search-form"
+    ) as HTMLFormElement;
+    const paginationContainer = document.querySelector(
+      ".flex.justify-center.mt-12"
+    ) as HTMLElement | null;
+
+    if (!allButton || !searchInput || !searchForm) return;
+
+    let activeFilters = new Set<string>();
+
+    // Filter function that implements OR logic
+    function filterProjects() {
+      const searchTerm = searchInput.value.toLowerCase();
+      let visibleCount = 0;
+
+      projectCards.forEach((card) => {
+        if (!card || !card.dataset.tags) return;
+
+        const tags = JSON.parse(card.dataset.tags as string) as string[];
+        const titleEl = card.querySelector("h3");
+        const descEl = card.querySelector("p");
+
+        if (!titleEl || !descEl) return;
+
+        const projectTitle = titleEl.textContent?.toLowerCase() || "";
+        const projectDescription = descEl.textContent?.toLowerCase() || "";
+
+        // If no filters are active or 'All' filter is active, only apply search filter
+        const matchesFilter =
+          activeFilters.size === 0 ||
+          [...activeFilters].some((filter) => tags.includes(filter));
+
+        // Check if the card matches the search query
+        const matchesSearch =
+          searchTerm === "" ||
+          projectTitle.includes(searchTerm) ||
+          projectDescription.includes(searchTerm);
+
+        // Display card if it matches both filter and search criteria
+        if (matchesFilter && matchesSearch) {
+          card.style.display = "block";
+          visibleCount++;
+        } else {
+          card.style.display = "none";
+        }
+      });
+
+      // Hide pagination when filtering
+      if (paginationContainer) {
+        paginationContainer.style.display =
+          searchTerm || activeFilters.size > 0 ? "none" : "flex";
+      }
+    }
+
+    // Handle filter button clicks
+    filterButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        if (!button.dataset.filter || !allButton) return;
+
+        const filter = button.dataset.filter;
+
+        // Handle "All" button
+        if (filter === "all") {
+          activeFilters.clear();
+          filterButtons.forEach((btn) => {
+            btn.classList.remove(
+              "active",
+              "bg-primary",
+              "text-primary-foreground"
+            );
+            btn.classList.add("bg-accent");
+          });
+          button.classList.add(
+            "active",
+            "bg-primary",
+            "text-primary-foreground"
+          );
+          button.classList.remove("bg-accent");
+        } else {
+          // Remove "All" filter if it's active
+          if (allButton.classList.contains("active")) {
+            allButton.classList.remove(
+              "active",
+              "bg-primary",
+              "text-primary-foreground"
+            );
+            allButton.classList.add("bg-accent");
+          }
+
+          // Toggle this filter
+          if (button.classList.contains("active")) {
+            button.classList.remove(
+              "active",
+              "bg-primary",
+              "text-primary-foreground"
+            );
+            button.classList.add("bg-accent");
+            activeFilters.delete(filter);
+
+            // If no filters are active, activate "All" button
+            if (activeFilters.size === 0) {
+              allButton.classList.add(
+                "active",
+                "bg-primary",
+                "text-primary-foreground"
+              );
+              allButton.classList.remove("bg-accent");
+            }
+          } else {
+            button.classList.add(
+              "active",
+              "bg-primary",
+              "text-primary-foreground"
+            );
+            button.classList.remove("bg-accent");
+            activeFilters.add(filter);
+          }
+        }
+
+        filterProjects();
+      });
+    });
+
+    // Handle search
+    searchForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      filterProjects();
+    });
+
+    searchInput.addEventListener("input", () => {
+      filterProjects();
+    });
+  });
+</script>
+
+<style>
+  .fade-up {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 0.6s ease-out,
+      transform 0.6s ease-out;
+  }
+
+  .fade-up.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Stagger the animations */
+  .grid > div:nth-child(2) {
+    transition-delay: 0.1s;
+  }
+  .grid > div:nth-child(3) {
+    transition-delay: 0.2s;
+  }
+  .grid > div:nth-child(4) {
+    transition-delay: 0.3s;
+  }
+  .grid > div:nth-child(5) {
+    transition-delay: 0.4s;
+  }
+  .grid > div:nth-child(6) {
+    transition-delay: 0.5s;
+  }
+  .grid > div:nth-child(7) {
+    transition-delay: 0.6s;
+  }
+  .grid > div:nth-child(8) {
+    transition-delay: 0.7s;
+  }
+</style>

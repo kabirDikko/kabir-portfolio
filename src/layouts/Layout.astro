@@ -1,0 +1,85 @@
+---
+import Sidebar from "../components/Sidebar.astro";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = "Kabir's portfolio website showcasing DevOps and cloud infrastructure expertise",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=5.0"
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#111111" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <title>{title}</title>
+  </head>
+  <body
+    class="min-h-screen bg-gradient-to-br from-background to-background/95 text-foreground antialiased"
+  >
+    <!-- Background subtle grid pattern -->
+    <div
+      class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMyMDIwMjAiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDM0djJoLTJ2LTJoMnptMC00aDJ2MmgtMnYtMnptLTQgMHYyaC0ydi0yaDJ6bTIgMGgydjJoLTJ2LTJ6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-50"
+    >
+    </div>
+
+    <div class="flex min-h-screen relative">
+      <Sidebar />
+      <main
+        id="main-content"
+        class="flex-1 p-4 md:p-6 ml-0 md:ml-64 transition-all duration-300 ease-in-out relative z-10"
+      >
+        <div
+          class="transition-all duration-250 ease-in-out opacity-100 translate-y-0 max-w-5xl mx-auto"
+        >
+          <slot />
+        </div>
+      </main>
+    </div>
+
+    <script>
+      // Add scroll restoration and smooth anchor links
+      document.addEventListener("DOMContentLoaded", () => {
+        // Handle anchor links with smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+          anchor.addEventListener("click", (e) => {
+            const href = anchor.getAttribute("href");
+            if (href && href !== "#") {
+              e.preventDefault();
+              const target = document.querySelector(href);
+              if (target) {
+                target.scrollIntoView({
+                  behavior: "smooth",
+                });
+              }
+            }
+          });
+        });
+
+        // Detect mobile devices for optimized interactions
+        const isMobile = window.matchMedia("(max-width: 768px)").matches;
+        if (isMobile) {
+          // Add touch event optimizations for mobile
+          document.documentElement.classList.add("is-mobile");
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,437 @@
+---
+import Layout from "../layouts/Layout.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import BlogCard from "../components/BlogCard.astro";
+import { getCollection } from "astro:content";
+
+// Get blog posts from content collection
+const allBlogPosts = await getCollection("blog");
+
+// Sort blog posts by date (newest first)
+const sortedBlogPosts = allBlogPosts.sort((a, b) => {
+  return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
+});
+
+// Extract unique categories for filters
+const categories = [
+  ...new Set(sortedBlogPosts.map((post) => post.data.category)),
+];
+
+// Pagination configuration
+const POSTS_PER_PAGE = 9;
+const currentPage = parseInt(Astro.url.searchParams.get("page") || "1");
+const totalPages = Math.ceil(sortedBlogPosts.length / POSTS_PER_PAGE);
+const paginatedPosts = sortedBlogPosts.slice(
+  (currentPage - 1) * POSTS_PER_PAGE,
+  currentPage * POSTS_PER_PAGE
+);
+
+// Generate page URLs
+const createPageUrl = (pageNum: number) => {
+  const url = new URL(Astro.url);
+  url.searchParams.set("page", pageNum.toString());
+  return url.pathname + url.search;
+};
+
+// Generate pagination items
+const paginationItems = [];
+
+// Previous button
+if (currentPage > 1) {
+  paginationItems.push({
+    type: "prev",
+    href: createPageUrl(currentPage - 1),
+  });
+}
+
+// Page numbers
+for (let i = 1; i <= totalPages; i++) {
+  // Show first page, last page, current page, and pages around current page
+  if (i === 1 || i === totalPages || Math.abs(i - currentPage) <= 1) {
+    paginationItems.push({
+      type: "page",
+      number: i,
+      isCurrent: i === currentPage,
+      href: createPageUrl(i),
+    });
+  } else if (
+    (i === 2 && currentPage > 3) ||
+    (i === totalPages - 1 && currentPage < totalPages - 2)
+  ) {
+    // Add ellipsis
+    paginationItems.push({
+      type: "ellipsis",
+    });
+  }
+}
+
+// Next button
+if (currentPage < totalPages) {
+  paginationItems.push({
+    type: "next",
+    href: createPageUrl(currentPage + 1),
+  });
+}
+---
+
+<Layout title="Blog - Kabir Dikko">
+  <div class="page-container">
+    <SectionHeading
+      title="DevOps & Cloud Blog"
+      subtitle="Insights, best practices, and tutorials about DevOps, cloud infrastructure, and automation."
+    />
+
+    <div
+      class="my-12 flex items-center justify-center flex-wrap gap-2"
+      id="filter-buttons"
+    >
+      <button
+        data-filter="all"
+        class="filter-btn active px-4 py-2 bg-primary text-primary-foreground rounded-full text-sm font-medium"
+        >All</button
+      >
+      {
+        categories.map((category) => (
+          <button
+            data-filter={category}
+            class="filter-btn px-4 py-2 bg-accent hover:bg-primary hover:text-primary-foreground transition-colors rounded-full text-sm font-medium"
+          >
+            {category}
+          </button>
+        ))
+      }
+    </div>
+
+    <div class="mb-8">
+      <form class="flex gap-2" id="search-form">
+        <input
+          type="text"
+          id="search-input"
+          placeholder="Search articles..."
+          class="flex-1 px-4 py-2 rounded-lg border border-border bg-transparent focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+        />
+        <button
+          type="submit"
+          class="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="w-4 h-4"
+            ><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"
+            ></path></svg
+          >
+        </button>
+      </form>
+    </div>
+
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+      id="blog-grid"
+    >
+      {
+        paginatedPosts.map((post) => (
+          <div class="blog-card" data-category={post.data.category}>
+            <BlogCard
+              title={post.data.title}
+              excerpt={post.data.excerpt}
+              date={post.data.date}
+              readTime={`${Math.ceil(post.data.excerpt.length / 500)} min read`}
+              category={post.data.category}
+              slug={post.slug}
+              imageUrl={post.data.image}
+            />
+          </div>
+        ))
+      }
+    </div>
+
+    {
+      totalPages > 1 && (
+        <div class="flex justify-center mt-12">
+          <div class="flex items-center gap-2">
+            {paginationItems.map((item) => {
+              if (item.type === "prev") {
+                return (
+                  <a
+                    href={item.href}
+                    class="w-10 h-10 flex items-center justify-center rounded-full bg-accent hover:bg-primary hover:text-primary-foreground transition-colors"
+                    aria-label="Previous page"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="w-4 h-4"
+                    >
+                      <path d="m15 18-6-6 6-6" />
+                    </svg>
+                  </a>
+                );
+              } else if (item.type === "next") {
+                return (
+                  <a
+                    href={item.href}
+                    class="w-10 h-10 flex items-center justify-center rounded-full bg-accent hover:bg-primary hover:text-primary-foreground transition-colors"
+                    aria-label="Next page"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="w-4 h-4"
+                    >
+                      <path d="m9 18 6-6-6-6" />
+                    </svg>
+                  </a>
+                );
+              } else if (item.type === "page") {
+                return (
+                  <a
+                    href={item.href}
+                    class={`w-10 h-10 flex items-center justify-center rounded-full ${
+                      item.isCurrent
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-accent hover:bg-primary hover:text-primary-foreground transition-colors"
+                    }`}
+                  >
+                    {item.number}
+                  </a>
+                );
+              } else if (item.type === "ellipsis") {
+                return (
+                  <span class="w-10 h-10 flex items-center justify-center">
+                    ...
+                  </span>
+                );
+              }
+              return null;
+            })}
+          </div>
+        </div>
+      )
+    }
+  </div>
+</Layout>
+
+<script>
+  // Add animation on scroll
+  document.addEventListener("DOMContentLoaded", () => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("show");
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    document.querySelectorAll(".grid > div").forEach((card) => {
+      card.classList.add("fade-up");
+      observer.observe(card);
+    });
+
+    // Filter functionality
+    const blogCards = document.querySelectorAll<HTMLElement>(".blog-card");
+    const filterButtons =
+      document.querySelectorAll<HTMLButtonElement>(".filter-btn");
+    const allButton = document.querySelector<HTMLButtonElement>(
+      '[data-filter="all"]'
+    );
+    const searchInput = document.getElementById(
+      "search-input"
+    ) as HTMLInputElement;
+    const searchForm = document.getElementById(
+      "search-form"
+    ) as HTMLFormElement;
+    const paginationContainer = document.querySelector(
+      ".flex.justify-center.mt-12"
+    ) as HTMLElement | null;
+
+    if (!allButton || !searchInput || !searchForm) return;
+
+    let activeFilters = new Set<string>();
+
+    // Filter function that implements OR logic
+    function filterPosts() {
+      const searchTerm = searchInput.value.toLowerCase();
+      let visibleCount = 0;
+
+      blogCards.forEach((card) => {
+        if (!card || !card.dataset.category) return;
+
+        const category = card.dataset.category;
+        const titleEl = card.querySelector("h2, h3");
+        const excerptEl = card.querySelector("p");
+
+        if (!titleEl || !excerptEl) return;
+
+        const postTitle = titleEl.textContent?.toLowerCase() || "";
+        const postExcerpt = excerptEl.textContent?.toLowerCase() || "";
+
+        // If no filters are active or 'All' filter is active, only apply search filter
+        const matchesFilter =
+          activeFilters.size === 0 ||
+          [...activeFilters].some((filter) => category === filter);
+
+        // Check if the card matches the search query
+        const matchesSearch =
+          searchTerm === "" ||
+          postTitle.includes(searchTerm) ||
+          postExcerpt.includes(searchTerm);
+
+        // Display card if it matches both filter and search criteria
+        if (matchesFilter && matchesSearch) {
+          card.style.display = "block";
+          visibleCount++;
+        } else {
+          card.style.display = "none";
+        }
+      });
+
+      // Hide pagination when filtering
+      if (paginationContainer) {
+        paginationContainer.style.display =
+          searchTerm || activeFilters.size > 0 ? "none" : "flex";
+      }
+    }
+
+    // Handle filter button clicks
+    filterButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        if (!button.dataset.filter || !allButton) return;
+
+        const filter = button.dataset.filter;
+
+        // Handle "All" button
+        if (filter === "all") {
+          activeFilters.clear();
+          filterButtons.forEach((btn) => {
+            btn.classList.remove(
+              "active",
+              "bg-primary",
+              "text-primary-foreground"
+            );
+            btn.classList.add("bg-accent");
+          });
+          button.classList.add(
+            "active",
+            "bg-primary",
+            "text-primary-foreground"
+          );
+          button.classList.remove("bg-accent");
+        } else {
+          // Remove "All" filter if it's active
+          if (allButton.classList.contains("active")) {
+            allButton.classList.remove(
+              "active",
+              "bg-primary",
+              "text-primary-foreground"
+            );
+            allButton.classList.add("bg-accent");
+          }
+
+          // Toggle this filter
+          if (button.classList.contains("active")) {
+            button.classList.remove(
+              "active",
+              "bg-primary",
+              "text-primary-foreground"
+            );
+            button.classList.add("bg-accent");
+            activeFilters.delete(filter);
+
+            // If no filters are active, activate "All" button
+            if (activeFilters.size === 0) {
+              allButton.classList.add(
+                "active",
+                "bg-primary",
+                "text-primary-foreground"
+              );
+              allButton.classList.remove("bg-accent");
+            }
+          } else {
+            button.classList.add(
+              "active",
+              "bg-primary",
+              "text-primary-foreground"
+            );
+            button.classList.remove("bg-accent");
+            activeFilters.add(filter);
+          }
+        }
+
+        filterPosts();
+      });
+    });
+
+    // Handle search
+    searchForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      filterPosts();
+    });
+
+    searchInput.addEventListener("input", () => {
+      filterPosts();
+    });
+  });
+</script>
+
+<style>
+  .fade-up {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 0.6s ease-out,
+      transform 0.6s ease-out;
+  }
+
+  .fade-up.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Stagger the animations */
+  .grid > div:nth-child(2) {
+    transition-delay: 0.1s;
+  }
+  .grid > div:nth-child(3) {
+    transition-delay: 0.2s;
+  }
+  .grid > div:nth-child(4) {
+    transition-delay: 0.3s;
+  }
+  .grid > div:nth-child(5) {
+    transition-delay: 0.4s;
+  }
+  .grid > div:nth-child(6) {
+    transition-delay: 0.5s;
+  }
+  .grid > div:nth-child(7) {
+    transition-delay: 0.6s;
+  }
+  .grid > div:nth-child(8) {
+    transition-delay: 0.7s;
+  }
+</style>

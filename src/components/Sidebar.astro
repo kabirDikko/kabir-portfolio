@@ -1,0 +1,238 @@
+---
+// Import Lucide icons
+import {
+  Cpu,
+  Home,
+  User,
+  BookOpen,
+  Radio,
+  Mail,
+  Github,
+  Linkedin,
+  Twitter,
+  FileEdit,
+  Menu,
+} from "lucide-astro";
+---
+
+<style>
+  /* Mobile-optimized sidebar links */
+  @media (max-width: 768px) {
+    .sidebar-link {
+      @apply py-4 px-4 flex items-center gap-3 rounded-lg text-gray-200/90 hover:text-primary transition-all hover:bg-sidebar-hover font-medium;
+    }
+
+    /* Staggered animation for nav items when sidebar opens */
+    #sidebar:not(.-translate-x-full) .sidebar-link {
+      animation: slideInRight 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+      animation-fill-mode: both;
+    }
+
+    #sidebar:not(.-translate-x-full) li:nth-child(1) .sidebar-link {
+      animation-delay: 0.1s;
+    }
+    #sidebar:not(.-translate-x-full) li:nth-child(2) .sidebar-link {
+      animation-delay: 0.15s;
+    }
+    #sidebar:not(.-translate-x-full) li:nth-child(3) .sidebar-link {
+      animation-delay: 0.2s;
+    }
+    #sidebar:not(.-translate-x-full) li:nth-child(4) .sidebar-link {
+      animation-delay: 0.25s;
+    }
+    #sidebar:not(.-translate-x-full) li:nth-child(5) .sidebar-link {
+      animation-delay: 0.3s;
+    }
+  }
+
+  @keyframes slideInRight {
+    0% {
+      transform: translateX(-20px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  /* Desktop sidebar links */
+  .sidebar-link {
+    @apply py-2 px-3 flex items-center gap-3 rounded-lg text-gray-200/90 hover:text-primary transition-colors hover:bg-sidebar-hover;
+  }
+</style>
+
+<aside
+  id="sidebar"
+  class="fixed top-0 left-0 h-full bg-sidebar/95 backdrop-blur-md border-r border-sidebar-border z-40 w-64 transition-transform duration-300 -translate-x-full md:translate-x-0 shadow-xl md:shadow-none"
+>
+  <div class="h-full flex flex-col">
+    {/* Logo/header */}
+    <div class="p-6 border-b border-sidebar-border flex items-center gap-3">
+      <span class="w-8 h-8 text-primary flex items-center justify-center">
+        <Cpu size={24} />
+      </span>
+      <h1 class="font-bold text-xl font-mono">Kabir Dikko</h1>
+    </div>
+
+    {/* Main Navigation */}
+    <nav class="flex-1 overflow-y-auto py-6 px-3">
+      <ul class="space-y-1">
+        <li>
+          <a href="/" class="sidebar-link">
+            <Home size={20} class="w-5 h-5" />
+            <span>Home</span>
+          </a>
+        </li>
+        <li>
+          <a href="/about" class="sidebar-link">
+            <User size={20} class="w-5 h-5" />
+            <span>About</span>
+          </a>
+        </li>
+        <li>
+          <a href="/blog" class="sidebar-link">
+            <BookOpen size={20} class="w-5 h-5" />
+            <span>Blog</span>
+          </a>
+        </li>
+        <li>
+          <a href="/projects" class="sidebar-link">
+            <Radio size={20} class="w-5 h-5" />
+            <span>Projects</span>
+          </a>
+        </li>
+        <li>
+          <a href="/contact" class="sidebar-link">
+            <Mail size={20} class="w-5 h-5" />
+            <span>Contact</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    {/* Social links */}
+    <div class="p-4 border-t border-sidebar-border">
+      <div class="flex justify-between items-center gap-2">
+        <a
+          href="https://github.com/kabirdikko"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-gray-300/80 hover:text-primary p-2 transition-colors duration-200"
+          aria-label="GitHub"
+        >
+          <Github size={16} class="w-4 h-4" />
+        </a>
+        <a
+          href="https://linkedin.com/in/kabirdikko"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-gray-300/80 hover:text-primary p-2 transition-colors duration-200"
+          aria-label="LinkedIn"
+        >
+          <Linkedin size={16} class="w-4 h-4" />
+        </a>
+        <a
+          href="https://twitter.com/kabirdikko"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-gray-300/80 hover:text-primary p-2 transition-colors duration-200"
+          aria-label="Twitter"
+        >
+          <Twitter size={16} class="w-4 h-4" />
+        </a>
+        <a
+          href="mailto:kabir.dikko97@gmail.com"
+          class="text-gray-300/80 hover:text-primary p-2 transition-colors duration-200"
+        >
+          <FileEdit size={16} class="w-4 h-4" />
+        </a>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- Mobile Menu Toggle (Visible on small screens) -->
+<button
+  id="sidebar-toggle"
+  class="fixed top-4 left-4 z-50 block md:hidden bg-sidebar/80 backdrop-blur-sm p-2 rounded-md shadow-md"
+  aria-label="Toggle navigation menu"
+>
+  <Menu class="w-6 h-6 text-gray-200" />
+  <span class="sr-only">Toggle Menu</span>
+</button>
+
+<!-- Mobile backdrop overlay -->
+<div
+  id="sidebar-backdrop"
+  class="fixed inset-0 bg-black/30 backdrop-blur-sm z-30 hidden md:hidden"
+>
+</div>
+
+<script>
+  // Mobile sidebar toggle functionality
+  document.addEventListener("DOMContentLoaded", () => {
+    const sidebarEl = document.getElementById("sidebar");
+    const toggleBtnEl = document.getElementById("sidebar-toggle");
+    const backdropEl = document.getElementById("sidebar-backdrop");
+
+    // Exit early if elements don't exist
+    if (!sidebarEl || !toggleBtnEl || !backdropEl) return;
+
+    // Use non-null assertions after the check above
+    const sidebar = sidebarEl;
+    const toggleBtn = toggleBtnEl;
+    const backdrop = backdropEl;
+
+    function closeSidebar() {
+      sidebar.classList.add("-translate-x-full");
+      backdrop.classList.add("hidden");
+      document.body.classList.remove("overflow-hidden");
+
+      // Add closing animation
+      sidebar.style.transition = "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)";
+    }
+
+    function openSidebar() {
+      sidebar.classList.remove("-translate-x-full");
+      backdrop.classList.remove("hidden");
+      document.body.classList.add("overflow-hidden");
+
+      // Add opening animation
+      sidebar.style.transition = "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)";
+    }
+
+    toggleBtn.addEventListener("click", () => {
+      if (sidebar.classList.contains("-translate-x-full")) {
+        openSidebar();
+      } else {
+        closeSidebar();
+      }
+    });
+
+    // Close sidebar when clicking outside
+    backdrop.addEventListener("click", closeSidebar);
+
+    // Close sidebar when pressing escape key
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeSidebar();
+    });
+
+    // Close sidebar when clicking on mobile nav links
+    const mobileNavLinks = sidebar.querySelectorAll("a");
+    mobileNavLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        if (window.innerWidth < 768) {
+          closeSidebar();
+        }
+      });
+    });
+
+    // Close sidebar when window resizes to desktop size
+    window.addEventListener("resize", () => {
+      if (window.innerWidth >= 768) {
+        closeSidebar();
+      }
+    });
+  });
+</script>
