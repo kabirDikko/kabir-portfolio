@@ -19,71 +19,11 @@ const technologies = [
   ...new Set(sortedProjects.flatMap((project) => project.data.tags)),
 ];
 
-// Add some sample projects if we don't have enough content projects yet
-const allProjectsData =
-  sortedProjects.length >= 4
-    ? sortedProjects
-    : [
-        ...sortedProjects,
-        {
-          data: {
-            title: "Multi-Cloud Cost Optimization Tool",
-            description:
-              "A tool to analyze and optimize cloud costs across AWS, Azure, and GCP, identifying unused resources and recommending optimizations.",
-            heroImage:
-              "https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?q=80&w=1000&auto=format&fit=crop",
-            tags: ["Python", "React", "AWS", "Azure", "GCP"],
-            repoUrl: "https://github.com/kabirdikko/cloud-cost-optimizer",
-            liveUrl: "https://cost-optimizer.example.com",
-          },
-          slug: "multi-cloud-cost-optimization",
-        },
-        {
-          data: {
-            title: "Secure CI/CD Pipeline Framework",
-            description:
-              "A framework for building secure, compliant CI/CD pipelines with integrated security scanning and policy enforcement.",
-            heroImage:
-              "https://images.unsplash.com/photo-1545987796-200677ee1011?q=80&w=1000&auto=format&fit=crop",
-            tags: ["Jenkins", "Docker", "Security", "DevSecOps"],
-            repoUrl: "https://github.com/kabirdikko/secure-cicd",
-            liveUrl: "https://secure-cicd.example.com",
-          },
-          slug: "secure-cicd-pipeline",
-        },
-        {
-          data: {
-            title: "Infrastructure Drift Detection System",
-            description:
-              "A system that detects and alerts on infrastructure drift, ensuring that cloud resources stay in compliance with IaC definitions.",
-            heroImage:
-              "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1000&auto=format&fit=crop",
-            tags: ["Terraform", "AWS", "CloudWatch", "Python"],
-            repoUrl: "https://github.com/kabirdikko/drift-detector",
-            liveUrl: "https://drift-detector.example.com",
-          },
-          slug: "infrastructure-drift-detection",
-        },
-        {
-          data: {
-            title: "Microservices Deployment Framework",
-            description:
-              "A framework for deploying, scaling, and managing microservices across multiple Kubernetes clusters and cloud providers.",
-            heroImage:
-              "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1000&auto=format&fit=crop",
-            tags: ["Kubernetes", "Helm", "ArgoCD", "GitOps"],
-            repoUrl: "https://github.com/kabirdikko/microservices-framework",
-            liveUrl: "https://ms-framework.example.com",
-          },
-          slug: "microservices-deployment-framework",
-        },
-      ];
-
 // Pagination configuration
 const PROJECTS_PER_PAGE = 6;
 const currentPage = parseInt(Astro.url.searchParams.get("page") || "1");
-const totalPages = Math.ceil(allProjectsData.length / PROJECTS_PER_PAGE);
-const paginatedProjects = allProjectsData.slice(
+const totalPages = Math.ceil(sortedProjects.length / PROJECTS_PER_PAGE);
+const paginatedProjects = sortedProjects.slice(
   (currentPage - 1) * PROJECTS_PER_PAGE,
   currentPage * PROJECTS_PER_PAGE
 );

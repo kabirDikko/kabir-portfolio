@@ -40,17 +40,44 @@ export default {
         },
       },
       boxShadow: {
-        header: "0 2px 10px rgba(0, 0, 0, 0.1)",
+        header: "0 1px 3px rgba(0, 0, 0, 0.05)",
+        sm: "0 1px 2px rgba(0, 0, 0, 0.03)",
+        md: "0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03)",
+        lg: "0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.03)",
       },
       fontFamily: {
         sans: ["Inter", "sans-serif"],
         mono: ["JetBrains Mono", "monospace"],
+      },
+      fontSize: {
+        xs: ["0.625rem", { lineHeight: "0.875rem" }], // 10px
+        sm: ["0.75rem", { lineHeight: "1.125rem" }], // 12px
+        base: ["0.8125rem", { lineHeight: "1.25rem" }], // 13px
+        lg: ["0.875rem", { lineHeight: "1.375rem" }], // 14px
+        xl: ["1rem", { lineHeight: "1.5rem" }], // 16px
+        "2xl": ["1.125rem", { lineHeight: "1.75rem" }], // 18px
+        "3xl": ["1.25rem", { lineHeight: "1.875rem" }], // 20px
+      },
+      spacing: {
+        0.5: "0.125rem", // 2px
+        1: "0.25rem", // 4px
+        1.5: "0.375rem", // 6px
+        2: "0.5rem", // 8px
+        2.5: "0.625rem", // 10px
+        3: "0.75rem", // 12px
+        3.5: "0.875rem", // 14px
+        4: "1rem", // 16px
       },
       typography: {
         DEFAULT: {
           css: {
             maxWidth: "none",
             color: "var(--foreground)",
+            fontSize: "0.875rem",
+            p: {
+              marginTop: "0.75rem",
+              marginBottom: "0.75rem",
+            },
             a: {
               color: "var(--primary)",
               "&:hover": {
@@ -59,22 +86,37 @@ export default {
             },
             h1: {
               color: "var(--foreground)",
+              fontSize: "1.5rem",
+              fontWeight: "500",
+              marginTop: "1.5rem",
+              marginBottom: "1rem",
             },
             h2: {
               color: "var(--foreground)",
+              fontSize: "1.25rem",
+              fontWeight: "500",
+              marginTop: "1.25rem",
+              marginBottom: "0.75rem",
             },
             h3: {
               color: "var(--foreground)",
+              fontSize: "1.125rem",
+              fontWeight: "500",
+              marginTop: "1.25rem",
+              marginBottom: "0.75rem",
             },
             h4: {
               color: "var(--foreground)",
+              fontSize: "1rem",
+              fontWeight: "500",
             },
             code: {
               color: "var(--foreground)",
               backgroundColor: "var(--accent)",
-              padding: "0.25rem",
+              padding: "0.15rem 0.25rem",
               borderRadius: "0.25rem",
               fontWeight: "400",
+              fontSize: "0.8125rem",
             },
             "code::before": {
               content: "none",
@@ -85,7 +127,9 @@ export default {
             pre: {
               backgroundColor: "rgb(22, 22, 29)",
               color: "var(--foreground)",
-              borderRadius: "0.5rem",
+              borderRadius: "0.25rem",
+              padding: "0.75rem 1rem",
+              fontSize: "0.8125rem",
             },
           },
         },
@@ -98,29 +142,29 @@ export default {
       addBase({
         ":root": {
           "--background": "222 47% 11%",
-          "--foreground": "210 40% 98%",
+          "--foreground": "210 25% 90%",
           "--card": "222 47% 10%",
-          "--card-foreground": "210 40% 98%",
+          "--card-foreground": "210 25% 90%",
           "--popover": "222 47% 11%",
-          "--popover-foreground": "210 40% 98%",
-          "--primary": "210 100% 60%",
-          "--primary-foreground": "210 40% 98%",
-          "--secondary": "217.2 32.6% 17.5%",
-          "--secondary-foreground": "210 40% 98%",
-          "--muted": "217.2 32.6% 17.5%",
-          "--muted-foreground": "215 20.2% 75.1%",
-          "--accent": "216 34% 21%",
-          "--accent-foreground": "210 40% 98%",
-          "--destructive": "0 62.8% 30.6%",
-          "--destructive-foreground": "210 40% 98%",
-          "--border": "217.2 32.6% 20.5%",
-          "--input": "217.2 32.6% 17.5%",
-          "--ring": "224.3 76.3% 48%",
-          "--radius": "0.5rem",
-          "--sidebar": "225 50% 8%",
-          "--sidebar-foreground": "210 40% 98%",
-          "--sidebar-border": "225 30% 12%",
-          "--text-body": "210 20% 75%",
+          "--popover-foreground": "210 25% 90%",
+          "--primary": "210 80% 55%",
+          "--primary-foreground": "210 25% 90%",
+          "--secondary": "217 32% 17%",
+          "--secondary-foreground": "210 25% 90%",
+          "--muted": "217 32% 17%",
+          "--muted-foreground": "215 15% 70%",
+          "--accent": "216 30% 20%",
+          "--accent-foreground": "210 25% 90%",
+          "--destructive": "0 65% 30%",
+          "--destructive-foreground": "210 25% 90%",
+          "--border": "217 32% 18%",
+          "--input": "217 32% 17%",
+          "--ring": "224 65% 48%",
+          "--radius": "0.25rem",
+          "--sidebar": "225 40% 9%",
+          "--sidebar-foreground": "210 25% 90%",
+          "--sidebar-border": "225 25% 12%",
+          "--text-body": "210 15% 70%",
         },
       });
     }),
