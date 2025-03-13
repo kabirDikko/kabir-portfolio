@@ -1,7 +1,7 @@
 ---
 title: "Accessibility Research: Analyzing Electric Wheelchair Usage Data"
 excerpt: "My experience volunteering at Aspire CREATe & Accessibility Research Group, where I helped analyze electric wheelchair usage data to improve mobility solutions."
-date: "August 15, 2017"
+date: "2017-08-15"
 author: "Kabir Dikko"
 category: "Research"
 tags: ["Accessibility", "Data Analysis", "Assistive Technology", "Research", "Rehabilitation Engineering"]
