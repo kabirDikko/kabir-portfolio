@@ -4,6 +4,7 @@ import SectionHeading from "../components/SectionHeading.astro";
 import BlogCard from "../components/BlogCard.astro";
 import ProjectCard from "../components/ProjectCard.astro";
 import CertificationCard from "../components/CertificationCard.astro";
+import InfiniteCertificationsScroller from "../components/InfiniteCertificationsScroller.astro";
 import { getCollection } from "astro:content";
 import {
   Cloud,
@@ -40,7 +41,7 @@ const latestProjects = (await getCollection("projects"))
         <div
           class="inline-block px-3 py-1 mb-6 text-xs font-semibold bg-primary/10 text-primary rounded-full border border-primary/20"
         >
-          🏅 5x AWS Certified Cloud Engineer | AI & Kubernetes Specialist
+          🏅 5x AWS Certified Cloud Engineer
         </div>
         <h1 class="text-4xl md:text-6xl font-bold mb-6">
           <div class="text-gradient-primary mb-6">Kabir Dikko</div>
@@ -81,61 +82,68 @@ const latestProjects = (await getCollection("projects"))
         subtitle="AWS Solutions Architect Professional with 5 AWS certifications, including the cutting-edge AWS AI Practitioner certification in addition to Certified Kubernetes Administrator (CKA) and HashiCorp Terraform Associate certifications."
       />
 
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <CertificationCard
-          title="AWS Certified Solutions Architect – Professional"
-          issuer="Amazon Web Services"
-          issueDate="2024-04-16"
-          credentialUrl="https://www.credly.com/badges/1b6271cc-83aa-4658-802e-efe1551ed822"
-          icon={Server}
-        />
-
-        <CertificationCard
-          title="AWS Certified AI Practitioner"
-          issuer="Amazon Web Services"
-          issueDate="2025-01-17"
-          credentialUrl="https://www.credly.com/badges/3dbebd96-122f-483d-b0e6-9fdb896090b5"
-          icon={Cpu}
-        />
-
-        <CertificationCard
-          title="AWS Certified AI Practitioner Early Adopter"
-          issuer="Amazon Web Services"
-          issueDate="2025-01-17"
-          credentialUrl="https://www.credly.com/badges/3dbebd96-122f-483d-b0e6-9fdb896090b5"
-          icon={Award}
-        />
-
-        <CertificationCard
-          title="AWS Certified Solutions Architect – Associate"
-          issuer="Amazon Web Services"
-          issueDate="2021-02-04"
-          credentialUrl="https://www.credly.com/badges/75f7538c-7eef-416b-b143-22fc45fb0f46"
-          icon={Cloud}
-        />
-
-        <CertificationCard
-          title="AWS Certified Cloud Practitioner"
-          issuer="Amazon Web Services"
-          issueDate="2021-01-11"
-          credentialUrl="https://www.credly.com/badges/b3c9fc79-e48d-4c18-9524-37fc324cda02"
-          icon={Cloud}
-        />
-
-        <CertificationCard
-          title="CKA: Certified Kubernetes Administrator"
-          issuer="Cloud Native Computing Foundation"
-          issueDate="2023-01-01"
-          credentialUrl="https://www.credly.com/badges/78ac0345-3716-4ed6-9bdb-3fde3bbc7a68"
-          icon={Boxes}
-        />
-
-        <CertificationCard
-          title="HashiCorp Certified: Terraform Associate"
-          issuer="HashiCorp"
-          issueDate="2023-01-01"
-          credentialUrl="https://www.credly.com/badges/61b0f78f-0b2f-45f0-8d57-b987858d1cb4"
-          icon={FileCode}
+      <div class="certification-scroller-container">
+        <InfiniteCertificationsScroller
+          items={[
+            {
+              title: "AWS Certified AI Practitioner",
+              issuer: "Amazon Web Services",
+              issueDate: "2025-01-17",
+              credentialUrl:
+                "https://www.credly.com/badges/3dbebd96-122f-483d-b0e6-9fdb896090b5",
+              icon: Cpu,
+            },
+            {
+              title: "AWS Certified AI Practitioner Early Adopter",
+              issuer: "Amazon Web Services",
+              issueDate: "2025-01-17",
+              credentialUrl:
+                "https://www.credly.com/badges/3dbebd96-122f-483d-b0e6-9fdb896090b5",
+              icon: Award,
+            },
+            {
+              title: "AWS Certified Solutions Architect – Professional",
+              issuer: "Amazon Web Services",
+              issueDate: "2024-04-16",
+              credentialUrl:
+                "https://www.credly.com/badges/1b6271cc-83aa-4658-802e-efe1551ed822",
+              icon: Server,
+            },
+            {
+              title: "CKA: Certified Kubernetes Administrator",
+              issuer: "Cloud Native Computing Foundation",
+              issueDate: "2023-01-01",
+              credentialUrl:
+                "https://www.credly.com/badges/78ac0345-3716-4ed6-9bdb-3fde3bbc7a68",
+              icon: Boxes,
+            },
+            {
+              title: "HashiCorp Certified: Terraform Associate",
+              issuer: "HashiCorp",
+              issueDate: "2023-01-01",
+              credentialUrl:
+                "https://www.credly.com/badges/61b0f78f-0b2f-45f0-8d57-b987858d1cb4",
+              icon: FileCode,
+            },
+            {
+              title: "AWS Certified Solutions Architect – Associate",
+              issuer: "Amazon Web Services",
+              issueDate: "2021-02-04",
+              credentialUrl:
+                "https://www.credly.com/badges/75f7538c-7eef-416b-b143-22fc45fb0f46",
+              icon: Cloud,
+            },
+            {
+              title: "AWS Certified Cloud Practitioner",
+              issuer: "Amazon Web Services",
+              issueDate: "2021-01-11",
+              credentialUrl:
+                "https://www.credly.com/badges/b3c9fc79-e48d-4c18-9524-37fc324cda02",
+              icon: Cloud,
+            },
+          ]}
+          speed="normal"
+          pauseOnHover={true}
         />
       </div>
     </section>

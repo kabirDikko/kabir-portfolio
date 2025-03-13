@@ -20,6 +20,11 @@ import {
   @media (max-width: 768px) {
     .sidebar-link {
       @apply py-4 px-4 flex items-center gap-3 rounded-lg text-gray-200/90 hover:text-primary transition-all hover:bg-sidebar-hover font-medium;
+      width: 100%;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      text-overflow: ellipsis;
+      max-width: 100%;
     }
 
     /* Staggered animation for nav items when sidebar opens */
@@ -43,6 +48,14 @@ import {
     #sidebar:not(.-translate-x-full) li:nth-child(5) .sidebar-link {
       animation-delay: 0.3s;
     }
+
+    /* Make sure the sidebar is properly contained */
+    #sidebar {
+      width: min(85vw, 256px) !important;
+      max-width: 85vw !important;
+      min-width: 0 !important;
+      overflow-x: hidden !important;
+    }
   }
 
   @keyframes slideInRight {
@@ -59,50 +72,54 @@ import {
   /* Desktop sidebar links */
   .sidebar-link {
     @apply py-2 px-3 flex items-center gap-3 rounded-lg text-gray-200/90 hover:text-primary transition-colors hover:bg-sidebar-hover;
+    max-width: 100%;
   }
 </style>
 
 <aside
   id="sidebar"
-  class="fixed top-0 left-0 h-full bg-sidebar/95 backdrop-blur-md border-r border-sidebar-border z-40 w-64 transition-transform duration-300 -translate-x-full md:translate-x-0 shadow-xl md:shadow-none"
+  class="fixed top-0 left-0 h-full bg-sidebar/95 backdrop-blur-md border-r border-sidebar-border z-40 w-64 max-w-[85vw] transition-transform duration-300 -translate-x-full md:translate-x-0 shadow-xl md:shadow-none overflow-hidden"
+  style="min-width: 0; box-sizing: border-box;"
 >
-  <div class="h-full flex flex-col">
+  <div class="h-full flex flex-col overflow-hidden">
     {/* Logo/header */}
-    <div class="p-6 border-b border-sidebar-border flex items-center gap-3">
-      <h1 class="font-bold text-xl font-mono">Kabir Dikko</h1>
+    <div
+      class="p-6 border-b border-sidebar-border flex items-center gap-3 overflow-hidden"
+    >
+      <h1 class="font-bold text-xl font-mono truncate">Kabir Dikko</h1>
     </div>
 
     {/* Main Navigation */}
-    <nav class="flex-1 overflow-y-auto py-6 px-3">
+    <nav class="flex-1 overflow-y-auto py-6 px-3 overflow-x-hidden">
       <ul class="space-y-1">
         <li>
           <a href="/" class="sidebar-link">
-            <Home size={20} class="w-5 h-5" />
-            <span>Home</span>
+            <Home size={20} class="w-5 h-5 flex-shrink-0" />
+            <span class="truncate">Home</span>
           </a>
         </li>
         <li>
           <a href="/about" class="sidebar-link">
-            <User size={20} class="w-5 h-5" />
-            <span>About</span>
+            <User size={20} class="w-5 h-5 flex-shrink-0" />
+            <span class="truncate">About</span>
           </a>
         </li>
         <li>
           <a href="/blog" class="sidebar-link">
-            <BookOpen size={20} class="w-5 h-5" />
-            <span>Blog</span>
+            <BookOpen size={20} class="w-5 h-5 flex-shrink-0" />
+            <span class="truncate">Blog</span>
           </a>
         </li>
         <li>
           <a href="/projects" class="sidebar-link">
-            <Radio size={20} class="w-5 h-5" />
-            <span>Projects</span>
+            <Radio size={20} class="w-5 h-5 flex-shrink-0" />
+            <span class="truncate">Projects</span>
           </a>
         </li>
         <li>
           <a href="/contact" class="sidebar-link">
-            <Mail size={20} class="w-5 h-5" />
-            <span>Contact</span>
+            <Mail size={20} class="w-5 h-5 flex-shrink-0" />
+            <span class="truncate">Contact</span>
           </a>
         </li>
       </ul>
@@ -110,7 +127,7 @@ import {
 
     {/* Social links */}
     <div class="p-4 border-t border-sidebar-border">
-      <div class="flex justify-between items-center gap-2">
+      <div class="flex justify-between items-center gap-2 overflow-hidden">
         <a
           href="https://github.com/kabirdikko"
           target="_blank"
@@ -172,14 +189,24 @@ import {
     const sidebarEl = document.getElementById("sidebar");
     const toggleBtnEl = document.getElementById("sidebar-toggle");
     const backdropEl = document.getElementById("sidebar-backdrop");
+    const mainContentEl = document.getElementById("main-content");
 
     // Exit early if elements don't exist
     if (!sidebarEl || !toggleBtnEl || !backdropEl) return;
 
     // Use non-null assertions after the check above
-    const sidebar = sidebarEl;
+    const sidebar = sidebarEl as HTMLElement;
     const toggleBtn = toggleBtnEl;
     const backdrop = backdropEl;
+    const mainContent = mainContentEl as HTMLElement | null;
+
+    // Ensure sidebar is properly contained within viewport
+    if (window.innerWidth < 768) {
+      sidebar.style.width = `min(85vw, 256px)`;
+      sidebar.style.maxWidth = "85vw";
+      sidebar.style.minWidth = "0";
+      sidebar.style.overflowX = "hidden";
+    }
 
     function closeSidebar() {
       sidebar.classList.add("-translate-x-full");
@@ -191,6 +218,12 @@ import {
     }
 
     function openSidebar() {
+      // Re-check dimensions before opening
+      if (window.innerWidth < 768) {
+        sidebar.style.width = `min(85vw, 256px)`;
+        sidebar.style.maxWidth = "85vw";
+      }
+
       sidebar.classList.remove("-translate-x-full");
       backdrop.classList.remove("hidden");
       document.body.classList.add("overflow-hidden");
@@ -225,10 +258,24 @@ import {
       });
     });
 
-    // Close sidebar when window resizes to desktop size
+    // Handle window resizing
     window.addEventListener("resize", () => {
       if (window.innerWidth >= 768) {
         closeSidebar();
+        sidebar.style.width = "16rem"; // 64 in rem
+      } else {
+        // Mobile size adjustment
+        sidebar.style.width = `min(85vw, 256px)`;
+        sidebar.style.maxWidth = "85vw";
+        sidebar.style.minWidth = "0";
+        sidebar.style.overflowX = "hidden";
+      }
+
+      // Enforce proper width constraints on resize
+      if (window.innerWidth < 768 && mainContent) {
+        mainContent.style.width = "100%";
+        mainContent.style.boxSizing = "border-box";
+        mainContent.style.overflowX = "hidden";
       }
     });
   });

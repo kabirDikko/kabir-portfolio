@@ -14,17 +14,30 @@ const {
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class="overflow-x-hidden">
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=5.0"
+      content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover, shrink-to-fit=no"
     />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <meta name="theme-color" content="#111111" />
+    <style is:inline>
+      /* Critical inline styles to prevent FOUC and ensure no horizontal scrolling */
+      html,
+      body {
+        max-width: 100%;
+        overflow-x: hidden;
+        margin: 0;
+        padding: 0;
+      }
+      * {
+        box-sizing: border-box;
+      }
+    </style>
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
       rel="stylesheet"
@@ -32,7 +45,7 @@ const {
     <title>{title}</title>
   </head>
   <body
-    class="min-h-screen bg-gradient-to-br from-background to-background/95 text-foreground antialiased"
+    class="min-h-screen overflow-x-hidden bg-gradient-to-br from-background to-background/95 text-foreground antialiased"
   >
     <!-- Background subtle grid pattern -->
     <div
@@ -40,14 +53,15 @@ const {
     >
     </div>
 
-    <div class="flex min-h-screen relative">
+    <div class="flex min-h-screen relative overflow-x-hidden content-wrapper">
       <Sidebar />
       <main
         id="main-content"
-        class="flex-1 p-4 md:p-6 ml-0 md:ml-64 transition-all duration-300 ease-in-out relative z-10"
+        class="flex-1 p-4 md:p-6 ml-0 md:ml-64 transition-all duration-300 ease-in-out relative z-10 overflow-x-hidden w-full"
       >
         <div
-          class="transition-all duration-250 ease-in-out opacity-100 translate-y-0 max-w-5xl mx-auto"
+          class="transition-all duration-250 ease-in-out opacity-100 translate-y-0 mx-auto responsive-text"
+          style="width: 100%; max-width: min(100%, 72rem);"
         >
           <slot />
         </div>
@@ -73,11 +87,50 @@ const {
           });
         });
 
+        // // Fix horizontal scrolling more aggressively
+        // function preventHorizontalScroll() {
+        //   // Apply to html and body
+        //   document.documentElement.style.overflow = "hidden auto";
+        //   document.documentElement.style.overflowX = "hidden";
+        //   document.documentElement.style.maxWidth = "100%";
+        //   document.body.style.overflow = "hidden auto";
+        //   document.body.style.overflowX = "hidden";
+        //   document.body.style.maxWidth = "100%";
+        //   document.body.style.width = "100%";
+
+        //   // Apply to main content
+        //   const mainContent = document.getElementById("main-content");
+        //   if (mainContent) {
+        //     (mainContent as HTMLElement).style.overflow = "hidden auto";
+        //     (mainContent as HTMLElement).style.overflowX = "hidden";
+        //     (mainContent as HTMLElement).style.maxWidth = "100%";
+        //     (mainContent as HTMLElement).style.width = "100%";
+        //     (mainContent as HTMLElement).style.boxSizing = "border-box";
+
+        //     // Apply to immediate children of main content
+        //     Array.from(mainContent.children).forEach((child) => {
+        //       (child as HTMLElement).style.maxWidth = "100%";
+        //       (child as HTMLElement).style.overflow = "hidden";
+        //       (child as HTMLElement).style.wordWrap = "break-word";
+        //       (child as HTMLElement).style.boxSizing = "border-box";
+        //     });
+        //   }
+        // }
+
+        // // Apply immediately
+        // // preventHorizontalScroll();
+
+        // // Apply on window resize
+        // window.addEventListener("resize", preventHorizontalScroll);
+
         // Detect mobile devices for optimized interactions
         const isMobile = window.matchMedia("(max-width: 768px)").matches;
         if (isMobile) {
           // Add touch event optimizations for mobile
           document.documentElement.classList.add("is-mobile");
+
+          // Additional mobile fixes
+          document.body.style.touchAction = "pan-y";
         }
       });
     </script>

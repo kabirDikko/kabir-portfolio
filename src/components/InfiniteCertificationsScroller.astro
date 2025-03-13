@@ -1,0 +1,83 @@
+---
+import CertificationCard from "./CertificationCard.astro";
+
+interface Props {
+  items: Array<{
+    title: string;
+    issuer: string;
+    issueDate: string;
+    credentialUrl: string;
+    icon: any;
+  }>;
+  direction?: "left" | "right";
+  speed?: "fast" | "normal" | "slow";
+  pauseOnHover?: boolean;
+}
+
+const {
+  items,
+  direction = "left",
+  speed = "normal",
+  pauseOnHover = true,
+} = Astro.props;
+
+// Set animation properties based on speed
+const animationDuration =
+  speed === "fast" ? "20s" : speed === "normal" ? "40s" : "80s";
+
+// Set animation direction
+const animationDirection = direction === "left" ? "forwards" : "reverse";
+---
+
+<div
+  class="scroller relative z-20 max-w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]"
+  style={`--animation-duration: ${animationDuration}; --animation-direction: ${animationDirection};`}
+>
+  <div
+    class="flex min-w-full shrink-0 gap-4 py-4 w-max flex-nowrap animate-scroll"
+    class:list={[pauseOnHover && "hover:[animation-play-state:paused]"]}
+  >
+    {/* First set of items */}
+    {
+      items.map((item) => (
+        <div class="w-[350px] shrink-0">
+          <CertificationCard
+            title={item.title}
+            issuer={item.issuer}
+            issueDate={item.issueDate}
+            credentialUrl={item.credentialUrl}
+            icon={item.icon}
+          />
+        </div>
+      ))
+    }
+
+    {/* Duplicate items for seamless looping */}
+    {
+      items.map((item) => (
+        <div class="w-[350px] shrink-0">
+          <CertificationCard
+            title={item.title}
+            issuer={item.issuer}
+            issueDate={item.issueDate}
+            credentialUrl={item.credentialUrl}
+            icon={item.icon}
+          />
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  @keyframes scroll {
+    to {
+      transform: translate(calc(-50% - 0.5rem));
+    }
+  }
+
+  .animate-scroll {
+    animation: scroll var(--animation-duration, 40s)
+      var(--animation-direction, forwards) linear infinite;
+  }
+</style>

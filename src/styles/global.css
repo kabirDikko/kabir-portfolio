@@ -7,29 +7,75 @@
 @layer base {
   * {
     @apply border-border;
+    box-sizing: border-box;
+    max-width: 100%;
+  }
+
+  html,
+  body {
+    @apply overflow-x-hidden;
+    width: 100%;
+    max-width: 100%;
+    position: relative;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
   }
 
   body {
     @apply bg-background text-foreground font-sans;
     font-feature-settings: "rlig" 1, "calt" 1;
+    position: relative;
+    overflow-x: clip;
+    -webkit-overflow-scrolling: touch;
   }
 
   ::selection {
     @apply bg-primary/30 text-foreground;
+  }
+
+  /* Ensure all images and other media are responsive */
+  img,
+  video,
+  canvas,
+  svg {
+    max-width: 100%;
+    height: auto;
+    vertical-align: middle;
+  }
+
+  /* Ensure pre and code blocks don't cause horizontal overflow */
+  pre,
+  code {
+    white-space: pre-wrap;
+    word-break: break-word;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  /* Force table to not be wider than container */
+  table {
+    width: 100%;
+    max-width: 100%;
+    display: block;
+    overflow-x: auto;
   }
 }
 
 @layer components {
   .glass-card {
     @apply bg-card/60 backdrop-blur-md border border-border/40 rounded-lg shadow-xl;
+    max-width: 100%;
   }
 
   .neo-glass {
     @apply bg-card/40 backdrop-blur-md border border-white/5 rounded-lg shadow-lg;
+    max-width: 100%;
   }
 
   .sidebar-link {
     @apply flex items-center gap-3 px-3 py-2 rounded-md text-base font-medium transition-all duration-200;
+    max-width: 100%;
   }
 
   .sidebar-link:hover {
@@ -41,7 +87,8 @@
   }
 
   .page-container {
-    @apply w-full max-w-6xl mx-auto px-4 py-8 md:px-8 md:py-12;
+    @apply w-full mx-auto px-4 py-8 md:px-8 md:py-12;
+    max-width: 72rem;
   }
 
   .section {
@@ -62,6 +109,21 @@
   .text-gradient-primary {
     @apply bg-gradient-to-br from-primary via-primary/90 to-primary/70 bg-clip-text text-transparent;
   }
+
+  /* Add responsive text handling */
+  .responsive-text {
+    @apply text-balance text-pretty break-words;
+    max-width: 100%;
+  }
+
+  /* Container to properly wrap content */
+  .content-wrapper {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
 }
 
 /* Scrollbar */
@@ -79,4 +141,58 @@
 
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-primary/30;
+}
+
+/* Mobile-specific fixes */
+@media (max-width: 768px) {
+  #root,
+  [data-reactroot] {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
+  body {
+    overflow-x: hidden;
+    width: 100%;
+    touch-action: pan-y;
+  }
+
+  /* Ensure main content properly adjusts when sidebar is hidden */
+  #main-content {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    box-sizing: border-box;
+  }
+
+  /* Fix potential width issues with any containers */
+  div,
+  section,
+  article,
+  nav,
+  header,
+  footer,
+  aside,
+  main {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Fix for potential long words breaking layout */
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  span,
+  a {
+    word-break: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+  }
 }
