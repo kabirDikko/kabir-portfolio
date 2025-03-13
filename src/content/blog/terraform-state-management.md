@@ -119,6 +119,10 @@ Cleaning up these resources manually is tedious and error-prone. AWS has depende
 
 My VPC Cleanup Utility includes a script similar to this one to handle the complex deletion process:
 
+
+
+
+
 ```bash
 #!/usr/bin/env bash
 
