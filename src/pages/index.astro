@@ -34,7 +34,7 @@ const latestProjects = (await getCollection("projects"))
     <!-- Hero Section -->
     <section
       id="hero"
-      class="min-h-[calc(100vh-2rem)] flex flex-col justify-center animate-on-scroll visible"
+      class="min-h-[calc(100vh-8rem)] flex flex-col justify-center animate-on-scroll visible"
     >
       <div class="py-12 md:py-20 md:w-3/4">
         <div
@@ -43,16 +43,16 @@ const latestProjects = (await getCollection("projects"))
           🏅 5x AWS Certified Cloud Engineer | AI & Kubernetes Specialist
         </div>
         <h1 class="text-4xl md:text-6xl font-bold mb-6">
-          <span class="text-gradient-primary">Kabir Dikko</span> — Architecting
-          <span class="text-primary">enterprise-grade cloud solutions</span> with
-          certified expertise
+          <div class="text-gradient-primary mb-6">Kabir Dikko</div>
+          <div
+            class="text-muted-foreground/80 text-4xl md:text-5xl font-light leading-tight"
+          >
+            Architecting
+            <span class="text-primary/80 font-medium"
+              >enterprise-grade cloud solutions</span
+            > with certified expertise
+          </div>
         </h1>
-        <p class="text-lg md:text-xl text-muted-foreground mb-8 md:w-3/4">
-          AWS Solutions Architect Professional with 5 AWS certifications,
-          including the cutting-edge AWS AI Practitioner certification in
-          addition to Certified Kubernetes Administrator (CKA) and HashiCorp
-          Terraform Associate certifications.
-        </p>
         <div class="flex flex-col sm:flex-row gap-4">
           <a
             href="/projects"
@@ -78,7 +78,7 @@ const latestProjects = (await getCollection("projects"))
     <section id="certifications" class="section animate-on-scroll visible">
       <SectionHeading
         title="Industry Certifications"
-        subtitle="Expert-level credentials spanning AWS cloud architecture, artificial intelligence, Kubernetes container orchestration, and Terraform infrastructure as code."
+        subtitle="AWS Solutions Architect Professional with 5 AWS certifications, including the cutting-edge AWS AI Practitioner certification in addition to Certified Kubernetes Administrator (CKA) and HashiCorp Terraform Associate certifications."
       />
 
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
