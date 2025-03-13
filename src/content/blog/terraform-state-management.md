@@ -4,7 +4,7 @@ excerpt: "Learn why proper state management with remote backends is essential fo
 date: "2025-03-13"
 author: "Kabir Dikko"
 featured: true
-image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1000&auto=format&fit=crop" 
+image: "https://www.google.com/imgres?q=terraform%20state%20management&imgurl=https%3A%2F%2Fspaceliftio.wpcomstaging.com%2Fwp-content%2Fuploads%2F2022%2F08%2F84.terraform-state-238x260.png%3Fcrop%3D1&imgrefurl=https%3A%2F%2Fspacelift.io%2Fblog%2Fterraform-state&docid=Wzj4FRT6dgbA0M&tbnid=w-mciwl0EIJHlM&vet=12ahUKEwiKg5SVmoaMAxWYVUEAHegmB3QQM3oECGUQAA..i&w=238&h=260&hcb=2&ved=2ahUKEwiKg5SVmoaMAxWYVUEAHegmB3QQM3oECGUQAA" 
 category: "Terraform"
 tags: ["Terraform", "Infrastructure as Code", "DevOps", "State Management", "AWS"]
 ---
