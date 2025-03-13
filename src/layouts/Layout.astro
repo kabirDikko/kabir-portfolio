@@ -87,50 +87,11 @@ const {
           });
         });
 
-        // // Fix horizontal scrolling more aggressively
-        // function preventHorizontalScroll() {
-        //   // Apply to html and body
-        //   document.documentElement.style.overflow = "hidden auto";
-        //   document.documentElement.style.overflowX = "hidden";
-        //   document.documentElement.style.maxWidth = "100%";
-        //   document.body.style.overflow = "hidden auto";
-        //   document.body.style.overflowX = "hidden";
-        //   document.body.style.maxWidth = "100%";
-        //   document.body.style.width = "100%";
-
-        //   // Apply to main content
-        //   const mainContent = document.getElementById("main-content");
-        //   if (mainContent) {
-        //     (mainContent as HTMLElement).style.overflow = "hidden auto";
-        //     (mainContent as HTMLElement).style.overflowX = "hidden";
-        //     (mainContent as HTMLElement).style.maxWidth = "100%";
-        //     (mainContent as HTMLElement).style.width = "100%";
-        //     (mainContent as HTMLElement).style.boxSizing = "border-box";
-
-        //     // Apply to immediate children of main content
-        //     Array.from(mainContent.children).forEach((child) => {
-        //       (child as HTMLElement).style.maxWidth = "100%";
-        //       (child as HTMLElement).style.overflow = "hidden";
-        //       (child as HTMLElement).style.wordWrap = "break-word";
-        //       (child as HTMLElement).style.boxSizing = "border-box";
-        //     });
-        //   }
-        // }
-
-        // // Apply immediately
-        // // preventHorizontalScroll();
-
-        // // Apply on window resize
-        // window.addEventListener("resize", preventHorizontalScroll);
-
         // Detect mobile devices for optimized interactions
         const isMobile = window.matchMedia("(max-width: 768px)").matches;
         if (isMobile) {
           // Add touch event optimizations for mobile
           document.documentElement.classList.add("is-mobile");
-
-          // Additional mobile fixes
-          document.body.style.touchAction = "pan-y";
         }
       });
     </script>
