@@ -41,7 +41,7 @@ const animationDirection = direction === "left" ? "forwards" : "reverse";
     {/* First set of items */}
     {
       items.map((item) => (
-        <div class="w-[350px] shrink-0">
+        <div class="w-[350px] max-w-[80vw] shrink-0">
           <CertificationCard
             title={item.title}
             issuer={item.issuer}
@@ -56,7 +56,7 @@ const animationDirection = direction === "left" ? "forwards" : "reverse";
     {/* Duplicate items for seamless looping */}
     {
       items.map((item) => (
-        <div class="w-[350px] shrink-0">
+        <div class="w-[350px] max-w-[80vw] shrink-0">
           <CertificationCard
             title={item.title}
             issuer={item.issuer}
@@ -85,7 +85,18 @@ const animationDirection = direction === "left" ? "forwards" : "reverse";
   /* Make animation faster on mobile screens */
   @media (max-width: 768px) {
     .animate-scroll {
-      animation-duration: calc(var(--animation-duration, 40s) * 0.5) !important;
+      animation-duration: calc(var(--animation-duration, 40s) * 0.7) !important;
+    }
+  }
+
+  /* Ensure proper spacing and visibility on small screens */
+  @media (max-width: 480px) {
+    .scroller {
+      mask-image: linear-gradient(to right, transparent, white 10%, white 90%, transparent);
+    }
+    
+    .animate-scroll {
+      gap: 1rem;
     }
   }
 </style>
