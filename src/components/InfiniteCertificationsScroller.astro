@@ -22,7 +22,8 @@ const {
 } = Astro.props;
 
 // Set animation properties based on speed
-const animationDuration =
+// We'll set a CSS variable and handle responsive speeds in the CSS
+const baseAnimationDuration =
   speed === "fast" ? "20s" : speed === "normal" ? "40s" : "80s";
 
 // Set animation direction
@@ -31,7 +32,7 @@ const animationDirection = direction === "left" ? "forwards" : "reverse";
 
 <div
   class="scroller relative z-20 max-w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]"
-  style={`--animation-duration: ${animationDuration}; --animation-direction: ${animationDirection};`}
+  style={`--animation-duration: ${baseAnimationDuration}; --animation-direction: ${animationDirection};`}
 >
   <div
     class="flex min-w-full shrink-0 gap-4 py-4 w-max flex-nowrap animate-scroll"
@@ -79,5 +80,12 @@ const animationDirection = direction === "left" ? "forwards" : "reverse";
   .animate-scroll {
     animation: scroll var(--animation-duration, 40s)
       var(--animation-direction, forwards) linear infinite;
+  }
+  
+  /* Make animation faster on mobile screens */
+  @media (max-width: 768px) {
+    .animate-scroll {
+      animation-duration: calc(var(--animation-duration, 40s) * 0.5) !important;
+    }
   }
 </style>
