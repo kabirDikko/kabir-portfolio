@@ -8,8 +8,8 @@ const isDev = process.env.NODE_ENV === "development";
 // https://astro.build/config
 export default defineConfig({
   integrations: [react(), tailwind(), mdx()],
-  site: "https://kabirDikko.github.io",
-  base: isDev ? "/" : "/kabir-portfolio",
+  site: "https://kabirdikko.com",
+  base: "/",
   markdown: {
     shikiConfig: {
       theme: "one-dark-pro",

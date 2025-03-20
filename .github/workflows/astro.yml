@@ -72,15 +72,21 @@ jobs:
       - name: Create public .nojekyll file 
         run: touch public/.nojekyll
         working-directory: ${{ env.BUILD_PATH }}
+      # Ensure CNAME is in the public directory
+      - name: Copy CNAME file to public directory
+        run: cp CNAME public/
+        working-directory: ${{ env.BUILD_PATH }}
       - name: Build with Astro
         run: |
-          ${{ steps.detect-package-manager.outputs.runner }} astro build \
-            --site "${{ steps.pages.outputs.origin }}" \
-            --base "${{ steps.pages.outputs.base_path }}"
+          ${{ steps.detect-package-manager.outputs.runner }} astro build
         working-directory: ${{ env.BUILD_PATH }}
       # Create .nojekyll file in dist directory
       - name: Create .nojekyll file in dist directory
         run: touch dist/.nojekyll
+        working-directory: ${{ env.BUILD_PATH }}
+      # Ensure CNAME is in the dist directory
+      - name: Copy CNAME file to dist directory
+        run: cp CNAME dist/
         working-directory: ${{ env.BUILD_PATH }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
