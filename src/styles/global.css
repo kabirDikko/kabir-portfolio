@@ -717,3 +717,80 @@ a[href]:hover:after, button:hover:after {
   0%, 100% { opacity: 0; transform: scale(0.5); }
   50% { opacity: 0.3; transform: scale(1); }
 }
+
+/* Mobile optimization enhancements */
+@layer utilities {
+  /* Improved tap targets for mobile */
+  .mobile-touch-target {
+    @apply min-h-[44px] min-w-[44px] flex items-center justify-center;
+  }
+  
+  /* Prevent overflow issues on mobile */
+  .mobile-safe-container {
+    @apply max-w-full overflow-x-hidden;
+  }
+}
+
+/* Make all interactive elements have better touch targets on mobile */
+@media (max-width: 768px) {
+  a, button, [role="button"], input[type="button"], input[type="submit"], input[type="reset"] {
+    @apply min-h-[44px] py-2 px-3;
+    touch-action: manipulation;
+  }
+  
+  /* Ensure clickable areas are large enough */
+  .btn, .button, [class*="btn-"] {
+    @apply min-h-[44px] py-2 px-4;
+    touch-action: manipulation;
+  }
+  
+  /* Fix any potential z-index issues that might block interactions */
+  .z-10, .z-20, .z-30 {
+    pointer-events: auto !important;
+  }
+  
+  /* Increase font size slightly for better readability */
+  body {
+    font-size: 16px !important;
+  }
+  
+  /* Make sure focus states are visible for accessibility */
+  a:focus, button:focus, input:focus, textarea:focus, select:focus {
+    @apply outline-primary outline-offset-2;
+  }
+}
+
+/* Ensure content is scrollable on iOS */
+html, body {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: none;
+}
+
+/* Adjust animations to be less resource-intensive on mobile */
+@media (max-width: 768px) {
+  .animate-on-scroll {
+    transition-duration: 0.3s !important;
+  }
+  
+  /* Optimize animations for better performance */
+  .circuit-container, .binary-bg, .electric-arcs {
+    opacity: 0.6 !important;
+  }
+  
+  /* Optimize card animations */
+  .glass-card {
+    transition: transform 0.2s ease-out !important;
+  }
+  
+  /* Make sure fixed elements don't break layout on iOS */
+  .fixed {
+    transform: translateZ(0);
+  }
+  
+  /* Special iOS fix for position fixed elements */
+  @supports (-webkit-touch-callout: none) {
+    .fixed {
+      position: absolute;
+    }
+  }
+}
