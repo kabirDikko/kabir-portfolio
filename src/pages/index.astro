@@ -57,39 +57,41 @@ const latestProjects = (await getCollection("projects"))
       </div>
       
       <div class="py-12 md:py-20 md:w-3/4 relative z-2">
-        <div
-          class="inline-block px-3 py-1 mb-6 text-xs font-semibold bg-black/30 text-primary rounded-sm border border-primary/50 shadow-[0_0_8px_hsla(var(--primary),0.4)]"
-        >
-          Cloud Engineer & DevOps Specialist
-        </div>
-        <h1 class="text-4xl md:text-6xl font-bold mb-6">
-          <div class="text-gradient-primary mb-6 typewriter-name">Kabir Dikko</div>
+        <div class="hero-content-wrapper bg-background/70 backdrop-blur-sm p-6 rounded-lg shadow-lg">
           <div
-            class="text-muted-foreground/90 text-4xl md:text-5xl font-light leading-tight typewriter-tagline"
+            class="inline-block px-3 py-1 mb-6 text-xs font-semibold bg-black/30 text-primary rounded-sm border border-primary/50 shadow-[0_0_8px_hsla(var(--primary),0.4)]"
           >
-            I design
-            <span class="text-primary font-medium"
-              >reliable cloud infrastructure</span
-            > for complex challenges
+            Cloud Engineer & DevOps Specialist
           </div>
-        </h1>
-        <div class="flex flex-col sm:flex-row gap-4 mt-8">
-          <a
-            href={`${siteBase}projects`}
-            class="btn-electric px-6 py-3 bg-primary text-primary-foreground rounded-sm font-medium hover:bg-primary/90 transition-colors inline-flex items-center group border border-primary/20 shadow-[0_0_12px_hsla(var(--primary),0.5)]"
-          >
-            View Projects
-            <ArrowRight
-              size={16}
-              class="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform"
-            />
-          </a>
-          <a
-            href={`${siteBase}contact`}
-            class="btn-electric px-6 py-3 bg-accent/70 text-accent-foreground rounded-sm font-medium hover:bg-accent/90 transition-colors border border-primary/40 shadow-[0_0_8px_hsla(var(--primary),0.4)]"
-          >
-            Contact Me
-          </a>
+          <h1 class="text-4xl md:text-6xl font-bold mb-6">
+            <div class="text-gradient-primary mb-6 typewriter-name">Kabir Dikko</div>
+            <div
+              class="text-muted-foreground/90 text-4xl md:text-5xl font-light leading-tight typewriter-tagline"
+            >
+              I design
+              <span class="text-primary font-medium"
+                >reliable cloud infrastructure</span
+              > for complex challenges
+            </div>
+          </h1>
+          <div class="flex flex-col sm:flex-row gap-4 mt-8">
+            <a
+              href={`${siteBase}projects`}
+              class="btn-electric px-6 py-3 bg-primary text-primary-foreground rounded-sm font-medium hover:bg-primary/90 transition-colors inline-flex items-center group border border-primary/20 shadow-[0_0_12px_hsla(var(--primary),0.5)]"
+            >
+              View Projects
+              <ArrowRight
+                size={16}
+                class="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform"
+              />
+            </a>
+            <a
+              href={`${siteBase}contact`}
+              class="btn-electric px-6 py-3 bg-accent/70 text-accent-foreground rounded-sm font-medium hover:bg-accent/90 transition-colors border border-primary/40 shadow-[0_0_8px_hsla(var(--primary),0.4)]"
+            >
+              Contact Me
+            </a>
+          </div>
         </div>
       </div>
     </section>
@@ -269,138 +271,95 @@ const latestProjects = (await getCollection("projects"))
     const sections = document.querySelectorAll(".animate-on-scroll");
     sections.forEach((section) => observer.observe(section));
     
-    // Add blink effect to name
-    const typewriterName = document.querySelector(".typewriter-name") as HTMLElement;
+    // Typewriter effect for name with cursor blinking
+    const typewriterName = document.querySelector('.typewriter-name') as HTMLElement;
     if (typewriterName) {
-      typewriterName.style.borderRight = "3px solid hsl(var(--primary))";
-      
-      // Create blink effect
+      typewriterName.style.borderRight = '0.1em solid transparent';
       setInterval(() => {
-        typewriterName.style.borderRightColor = 
-          typewriterName.style.borderRightColor === "transparent" 
-            ? "hsl(var(--primary))" 
-            : "transparent";
-      }, 750);
+        typewriterName.style.borderRight = 
+          typewriterName.style.borderRight === '0.1em solid transparent' 
+            ? '0.1em solid hsl(var(--primary))' 
+            : '0.1em solid transparent';
+      }, 700);
     }
     
-    // Circuit board animation - enhanced
-    const circuitContainer = document.querySelector('.circuit-container');
+    // Circuit board animation - reduced intensity
+    const circuitContainer = document.querySelector('.circuit-container') as HTMLElement;
     if (circuitContainer) {
-      // Set up the circuit board animation
-      const circuitElements = 30; // Increased number of circuit elements
+      const gridWidth = circuitContainer.offsetWidth;
+      const gridHeight = circuitContainer.offsetHeight;
       
-      // Define the coordinates for predefined circuit paths
-      const circuitPaths = [
-        // Top left pattern
-        { x: '10%', y: '20%', type: 'node' },
-        { x: '10%', y: '20%', type: 'horizontal', width: '15%' },
-        { x: '25%', y: '20%', type: 'node' },
-        { x: '25%', y: '20%', type: 'vertical', height: '15%' },
-        { x: '25%', y: '35%', type: 'node' },
-        { x: '25%', y: '35%', type: 'horizontal', width: '15%' },
-        { x: '40%', y: '35%', type: 'node' },
-        
-        // Right side pattern
-        { x: '65%', y: '25%', type: 'node' },
-        { x: '65%', y: '25%', type: 'vertical', height: '25%' },
-        { x: '65%', y: '50%', type: 'node' },
-        { x: '65%', y: '50%', type: 'horizontal', width: '-20%' },
-        { x: '45%', y: '50%', type: 'node' },
-        
-        // Bottom pattern
-        { x: '20%', y: '70%', type: 'node' },
-        { x: '20%', y: '70%', type: 'horizontal', width: '30%' },
-        { x: '50%', y: '70%', type: 'node' },
-        { x: '50%', y: '70%', type: 'diagonal', width: '15%', angle: '45deg' },
-        { x: '65%', y: '80%', type: 'node' },
-        
-        // Additional connections
-        { x: '80%', y: '30%', type: 'node' },
-        { x: '80%', y: '30%', type: 'vertical', height: '40%' },
-        { x: '80%', y: '70%', type: 'node' },
-        
-        // Enhanced connections
-        { x: '15%', y: '55%', type: 'node' },
-        { x: '15%', y: '55%', type: 'horizontal', width: '10%' },
-        { x: '25%', y: '55%', type: 'node' },
-        
-        { x: '70%', y: '15%', type: 'node' },
-        { x: '70%', y: '15%', type: 'diagonal', width: '15%', angle: '-45deg' },
-        { x: '85%', y: '30%', type: 'node' },
-        
-        { x: '35%', y: '85%', type: 'node' },
-        { x: '35%', y: '85%', type: 'horizontal', width: '25%' },
-        { x: '60%', y: '85%', type: 'node' },
-        
-        { x: '90%', y: '45%', type: 'node' },
-        { x: '90%', y: '45%', type: 'vertical', height: '20%' },
-        { x: '90%', y: '65%', type: 'node' },
-        
-        // New connections for more density
-        { x: '5%', y: '40%', type: 'node' },
-        { x: '5%', y: '40%', type: 'horizontal', width: '10%' },
-        { x: '15%', y: '40%', type: 'node' },
-        
-        { x: '55%', y: '15%', type: 'node' },
-        { x: '55%', y: '15%', type: 'vertical', height: '15%' },
-        { x: '55%', y: '30%', type: 'node' },
-        
-        { x: '30%', y: '10%', type: 'node' },
-        { x: '30%', y: '10%', type: 'diagonal', width: '15%', angle: '45deg' },
-        { x: '45%', y: '25%', type: 'node' },
-      ];
+      // Create fewer circuit nodes and lines
+      const nodeCount = Math.min(10, Math.floor(gridWidth * gridHeight / 50000)); // Reduced from typical 20-30
       
-      // Create circuit elements based on predefined paths
-      circuitPaths.forEach((path, index) => {
-        const element = document.createElement('div');
+      // Create circuit nodes
+      for (let i = 0; i < nodeCount; i++) {
+        const node = document.createElement('div');
+        node.className = 'circuit-node';
         
-        if (path.type === 'node') {
-          element.className = 'circuit-node';
-          element.style.left = path.x;
-          element.style.top = path.y;
-          element.style.animation = `nodeFlash ${1 + Math.random() * 0.5}s ease-in-out ${(index * 0.1) % 2}s infinite alternate`;
-        } else {
-          element.className = `circuit-line ${path.type === 'vertical' ? 'vertical-circuit' : path.type === 'diagonal' ? 'diagonal-circuit' : 'horizontal-circuit'}`;
-          element.style.left = path.x;
-          element.style.top = path.y;
+        // Random position
+        node.style.left = `${Math.random() * 95}%`;
+        node.style.top = `${Math.random() * 95}%`;
+        
+        // Set animation with random delay
+        const delay = Math.random() * 10;
+        node.style.animation = `nodeFlash 3s ease-in-out ${delay}s infinite`;
+        
+        circuitContainer.appendChild(node);
+        
+        // Create fewer connecting lines from this node (1-2 instead of 2-3)
+        const lineCount = Math.floor(Math.random() * 2) + 1;
+        
+        for (let j = 0; j < lineCount; j++) {
+          const line = document.createElement('div');
+          line.className = 'circuit-line';
           
-          if (path.width) {
-            const widthVal = path.width.toString();
-            if (widthVal.startsWith('-')) {
-              element.style.transform = `scaleX(-1) ${path.type === 'diagonal' ? `rotate(${path.angle || '45deg'})` : ''}`;
-              element.style.transformOrigin = 'right center';
-              element.style.width = widthVal.substring(1);
-            } else {
-              element.style.width = widthVal;
-              if (path.type === 'diagonal') {
-                element.style.transform = `rotate(${path.angle || '45deg'})`;
-                element.style.transformOrigin = 'left center';
-              }
-            }
+          // Position at the same place as the node
+          line.style.left = node.style.left;
+          line.style.top = node.style.top;
+          
+          // Random direction (horizontal, vertical, or diagonal)
+          const direction = Math.floor(Math.random() * 3);
+          if (direction === 0) {
+            line.classList.add('horizontal-circuit');
+          } else if (direction === 1) {
+            line.classList.add('vertical-circuit');
+          } else {
+            line.classList.add('diagonal-circuit');
           }
           
-          if (path.height) {
-            element.style.height = path.height;
+          // Random length (shorter than before)
+          const length = 30 + Math.floor(Math.random() * 70); // Reduced max from 100
+          if (direction === 0) {
+            line.style.width = `${length}px`;
+          } else if (direction === 1) {
+            line.style.height = `${length}px`;
+          } else {
+            const diagLength = Math.sqrt(2) * length;
+            line.style.width = `${diagLength}px`;
           }
           
-          element.style.animation = `lineFlash ${1.5 + Math.random()}s ease-in-out ${(index * 0.1) % 3}s infinite`;
+          // Set animation with slightly delayed timing compared to the node
+          const lineDelay = delay + 0.2;
+          line.style.animation = `lineFlash 3s ease-in-out ${lineDelay}s infinite`;
+          
+          circuitContainer.appendChild(line);
         }
-        
-        circuitContainer.appendChild(element);
-      });
+      }
     }
     
-    // Add binary background elements - enhanced
-    const binaryBg = document.querySelector('.binary-bg');
+    // Binary background - reduced elements
+    const binaryBg = document.querySelector('.binary-bg') as HTMLElement;
     if (binaryBg) {
-      const binaryRows = 20; // Increased number of binary rows
-      const binaryElements = 35; // Increased binary elements per row
+      const rowCount = 10; // Reduced from typical 20
+      const binaryElements = 12; // Reduced from typical 20
       
-      for (let i = 0; i < binaryRows; i++) {
+      // Generate fewer rows of binary
+      for (let i = 0; i < rowCount; i++) {
         // Create a row of binary
         const row = document.createElement('div');
         row.className = 'binary-text';
-        row.style.top = `${5 * i}%`;
+        row.style.top = `${10 * i}%`; // More spaced out
         row.style.left = `${Math.random() * 100}%`;
         row.style.animation = `fade-binary ${5 + Math.random() * 10}s linear ${i * 0.5}s infinite`;
         
@@ -417,10 +376,10 @@ const latestProjects = (await getCollection("projects"))
     }
     
     // Add electric arc elements - enhanced
-    const electricArcs = document.querySelector('.electric-arcs');
+    const electricArcs = document.querySelector('.electric-arcs') as HTMLElement;
     if (electricArcs) {
       // Create more random electric arcs
-      for (let i = 0; i < 8; i++) { // Increased number of arcs
+      for (let i = 0; i < 5; i++) { // Reduced from 8 to 5 arcs
         const arc = document.createElement('div');
         arc.className = 'electric-arc';
         arc.style.position = 'absolute';
@@ -431,11 +390,11 @@ const latestProjects = (await getCollection("projects"))
         arc.style.transform = `rotate(${Math.random() * 360}deg)`;
         arc.style.background = `linear-gradient(90deg, 
           transparent, 
-          hsla(var(--primary), 0.5), 
-          hsla(var(--primary), 1), 
-          hsla(var(--primary), 0.5), 
+          hsla(var(--primary), 0.3), 
+          hsla(var(--primary), 0.7), 
+          hsla(var(--primary), 0.3), 
           transparent)`;
-        arc.style.boxShadow = '0 0 12px hsla(var(--primary), 0.9)';
+        arc.style.boxShadow = '0 0 8px hsla(var(--primary), 0.6)';
         arc.style.borderRadius = '3px';
         arc.style.opacity = '0';
         arc.style.zIndex = '1';
@@ -452,6 +411,13 @@ const latestProjects = (await getCollection("projects"))
 </script>
 
 <style>
+  .hero-content-wrapper {
+    position: relative;
+    z-index: 10;
+    border: 1px solid hsla(var(--primary), 0.1);
+    max-width: 95%;
+  }
+  
   .electric-arcs {
     position: absolute;
     top: 0;
@@ -471,12 +437,12 @@ const latestProjects = (await getCollection("projects"))
     0%, 100% { 
       opacity: 0;
       transform: scaleX(0.8) rotate(var(--rotation, 0deg)); 
-      box-shadow: 0 0 5px hsla(var(--primary), 0.5);
+      box-shadow: 0 0 3px hsla(var(--primary), 0.3);
     }
     50% { 
-      opacity: 1;
+      opacity: 0.7;
       transform: scaleX(1.2) rotate(var(--rotation, 0deg)); 
-      box-shadow: 0 0 15px hsla(var(--primary), 0.9);
+      box-shadow: 0 0 8px hsla(var(--primary), 0.6);
     }
   }
 </style>

@@ -31,17 +31,17 @@ const animationDirection = direction === "left" ? "forwards" : "reverse";
 ---
 
 <div
-  class="scroller relative z-20 max-w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)] mobile-safe-container"
+  class="scroller relative z-20 max-w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]"
   style={`--animation-duration: ${baseAnimationDuration}; --animation-direction: ${animationDirection};`}
 >
   <div
     class="flex min-w-full shrink-0 gap-4 py-4 w-max flex-nowrap animate-scroll"
-    class:list={[pauseOnHover && "hover:[animation-play-state:paused] touch-pause-enabled"]}
+    class:list={[pauseOnHover && "hover:[animation-play-state:paused]"]}
   >
     {/* First set of items */}
     {
       items.map((item) => (
-        <div class="certification-item w-[350px] md:max-w-[350px] max-w-[270px] shrink-0">
+        <div class="certification-item w-[350px] md:max-w-[350px] max-w-[280px] shrink-0">
           <CertificationCard
             title={item.title}
             issuer={item.issuer}
@@ -56,7 +56,7 @@ const animationDirection = direction === "left" ? "forwards" : "reverse";
     {/* Duplicate items for seamless looping */}
     {
       items.map((item) => (
-        <div class="certification-item w-[350px] md:max-w-[350px] max-w-[270px] shrink-0">
+        <div class="certification-item w-[350px] md:max-w-[350px] max-w-[280px] shrink-0">
           <CertificationCard
             title={item.title}
             issuer={item.issuer}
@@ -85,12 +85,7 @@ const animationDirection = direction === "left" ? "forwards" : "reverse";
   /* Make animation faster on mobile screens */
   @media (max-width: 768px) {
     .animate-scroll {
-      animation-duration: calc(var(--animation-duration, 40s) * 0.4) !important;
-    }
-    
-    /* Enable touch-friendly scroll pausing */
-    .touch-pause-enabled {
-      touch-action: pan-y;
+      animation-duration: calc(var(--animation-duration, 40s) * 0.5) !important;
     }
   }
 
@@ -102,63 +97,11 @@ const animationDirection = direction === "left" ? "forwards" : "reverse";
     
     .animate-scroll {
       gap: 0.5rem;
-      animation-duration: calc(var(--animation-duration, 40s) * 0.3) !important;
+      animation-duration: calc(var(--animation-duration, 40s) * 0.4) !important;
     }
     
     .certification-item {
       transform: scale(0.95);
-      transition: transform 0.2s ease;
-    }
-    
-    /* Make cards slightly more engaging on touch */
-    .certification-item:active {
-      transform: scale(0.97);
     }
   }
 </style>
-
-<script>
-  // Enhance the touch experience for mobile devices
-  document.addEventListener('DOMContentLoaded', () => {
-    // Animation pause/resume on touch for mobile
-    const scroller = document.querySelector('.animate-scroll') as HTMLElement | null;
-    let isTouching = false;
-    
-    if (scroller && window.matchMedia('(max-width: 768px)').matches) {
-      scroller.addEventListener('touchstart', () => {
-        isTouching = true;
-        scroller.style.animationPlayState = 'paused';
-      }, { passive: true });
-      
-      ['touchend', 'touchcancel'].forEach(event => {
-        scroller.addEventListener(event, () => {
-          isTouching = false;
-          // Resume animation after a slight delay
-          setTimeout(() => {
-            if (!isTouching) {
-              scroller.style.animationPlayState = 'running';
-            }
-          }, 500);
-        }, { passive: true });
-      });
-    }
-    
-    // Make all certification cards responsive to taps
-    const certificationCards = document.querySelectorAll('.certification-item');
-    certificationCards.forEach(card => {
-      const cardElement = card as HTMLElement;
-      const linkElement = cardElement.querySelector('a') as HTMLElement | null;
-      
-      cardElement.addEventListener('click', (e) => {
-        // Only trigger link on card click if we're on mobile
-        if (window.matchMedia('(max-width: 768px)').matches && linkElement) {
-          // Don't trigger if we clicked directly on the link already
-          if (!(e.target as HTMLElement).closest('a')) {
-            e.preventDefault();
-            linkElement.click();
-          }
-        }
-      });
-    });
-  });
-</script>

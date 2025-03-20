@@ -28,13 +28,6 @@ const siteBase = import.meta.env.BASE_URL || '/';
       word-wrap: break-word;
       text-overflow: ellipsis;
       max-width: 100%;
-      min-height: 54px; /* Increased touch target size */
-      position: relative;
-    }
-    
-    /* Add active touch state styles */
-    .link-active, .sidebar-link:active {
-      @apply bg-primary/20;
     }
 
     /* Staggered animation for nav items when sidebar opens */
@@ -103,31 +96,31 @@ const siteBase = import.meta.env.BASE_URL || '/';
     <nav class="flex-1 overflow-y-auto py-6 px-3 overflow-x-hidden">
       <ul class="space-y-1">
         <li>
-          <a href={siteBase} class="sidebar-link mobile-nav-link">
+          <a href={siteBase} class="sidebar-link">
             <Home size={20} class="w-5 h-5 flex-shrink-0" />
             <span class="truncate">Home</span>
           </a>
         </li>
         <li>
-          <a href={`${siteBase}about`} class="sidebar-link mobile-nav-link">
+          <a href={`${siteBase}about`} class="sidebar-link">
             <User size={20} class="w-5 h-5 flex-shrink-0" />
             <span class="truncate">About</span>
           </a>
         </li>
         <li>
-          <a href={`${siteBase}blog`} class="sidebar-link mobile-nav-link">
+          <a href={`${siteBase}blog`} class="sidebar-link">
             <BookOpen size={20} class="w-5 h-5 flex-shrink-0" />
             <span class="truncate">Blog</span>
           </a>
         </li>
         <li>
-          <a href={`${siteBase}projects`} class="sidebar-link mobile-nav-link">
+          <a href={`${siteBase}projects`} class="sidebar-link">
             <Radio size={20} class="w-5 h-5 flex-shrink-0" />
             <span class="truncate">Projects</span>
           </a>
         </li>
         <li>
-          <a href={`${siteBase}contact`} class="sidebar-link mobile-nav-link">
+          <a href={`${siteBase}contact`} class="sidebar-link">
             <Mail size={20} class="w-5 h-5 flex-shrink-0" />
             <span class="truncate">Contact</span>
           </a>
@@ -200,7 +193,6 @@ const siteBase = import.meta.env.BASE_URL || '/';
     const toggleBtnEl = document.getElementById("sidebar-toggle");
     const backdropEl = document.getElementById("sidebar-backdrop");
     const mainContentEl = document.getElementById("main-content");
-    const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
 
     // Exit early if elements don't exist
     if (!sidebarEl || !toggleBtnEl || !backdropEl) return;
@@ -254,53 +246,39 @@ const siteBase = import.meta.env.BASE_URL || '/';
     // Close sidebar when clicking outside
     backdrop.addEventListener("click", closeSidebar);
 
-    // Make mobile navigation work correctly
-    mobileNavLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        // Close sidebar on mobile after navigation link is clicked
+    // Close sidebar when pressing escape key
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeSidebar();
+    });
+
+    // Close sidebar when clicking on mobile nav links
+    const mobileNavLinks = sidebar.querySelectorAll("a");
+    mobileNavLinks.forEach((link) => {
+      link.addEventListener("click", () => {
         if (window.innerWidth < 768) {
-          // Short delay to ensure the click registers before sidebar closes
-          setTimeout(closeSidebar, 100);
+          closeSidebar();
         }
       });
     });
 
-    // For all links in the sidebar, ensure they're tappable on mobile
-    document.querySelectorAll('#sidebar a').forEach(link => {
-      const linkElement = link as HTMLElement;
-      
-      link.addEventListener('touchstart', () => {
-        // Add a class to indicate the link is being touched
-        linkElement.classList.add('link-active');
-      }, { passive: true });
-      
-      link.addEventListener('touchend', () => {
-        // Remove the active class after touch ends
-        linkElement.classList.remove('link-active');
-      }, { passive: true });
-    });
-
-    // Close sidebar when pressing escape key
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && !sidebar.classList.contains("-translate-x-full")) {
+    // Handle window resizing
+    window.addEventListener("resize", () => {
+      if (window.innerWidth >= 768) {
         closeSidebar();
-      }
-    });
-
-    // Check for iPad/tablets in portrait mode and adjust sidebar behavior
-    const isTabletPortrait = window.matchMedia('(min-width: 768px) and (max-width: 1024px) and (orientation: portrait)').matches;
-    
-    if (isTabletPortrait) {
-      // Tablets in portrait mode should behave more like mobile
-      sidebar.classList.add("-translate-x-full");
-      toggleBtn.classList.remove("md:hidden");
-    }
-
-    // Handle window resize to close sidebar on mobile/tablet
-    window.addEventListener('resize', () => {
-      if (window.innerWidth < 768 || isTabletPortrait) {
+        sidebar.style.width = "16rem"; // 64 in rem
+      } else {
+        // Mobile size adjustment
         sidebar.style.width = `min(85vw, 256px)`;
         sidebar.style.maxWidth = "85vw";
+        sidebar.style.minWidth = "0";
+        sidebar.style.overflowX = "hidden";
+      }
+
+      // Enforce proper width constraints on resize
+      if (window.innerWidth < 768 && mainContent) {
+        mainContent.style.width = "100%";
+        mainContent.style.boxSizing = "border-box";
+        mainContent.style.overflowX = "hidden";
       }
     });
   });
