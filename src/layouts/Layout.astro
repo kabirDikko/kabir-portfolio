@@ -11,6 +11,9 @@ const {
   title,
   description = "Kabir's portfolio website showcasing DevOps and cloud infrastructure expertise",
 } = Astro.props;
+
+// For GitHub Pages compatibility
+const siteBase = import.meta.env.BASE_URL || '/';
 ---
 
 <!doctype html>
@@ -22,9 +25,9 @@ const {
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover, shrink-to-fit=no"
     />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={`${siteBase}favicon.svg`} />
     <meta name="generator" content={Astro.generator} />
-    <meta name="theme-color" content="#111111" />
+    <meta name="theme-color" content="#000000" />
     <style is:inline>
       /* Critical inline styles to prevent FOUC and ensure no horizontal scrolling */
       html,
@@ -33,31 +36,52 @@ const {
         overflow-x: hidden;
         margin: 0;
         padding: 0;
+        background-color: #050508; /* Ensure immediate dark background before CSS loads */
       }
       * {
         box-sizing: border-box;
       }
     </style>
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <title>{title}</title>
   </head>
   <body
-    class="min-h-screen overflow-x-hidden bg-gradient-to-br from-background to-background/95 text-foreground antialiased"
+    class="min-h-screen overflow-x-hidden bg-gradient-to-br from-background to-background/90 text-foreground antialiased"
   >
+    <!-- Loading progress bar -->
+    <div id="loading-container" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background">
+      <div id="loading-bar-container" class="w-full md:w-1/2 max-w-xl h-2 mb-6 bg-accent/30">
+        <div id="loading-bar" class="h-full bg-primary"></div>
+      </div>
+      <div id="loading-status" class="font-mono text-sm text-primary opacity-70">Starting up...</div>
+      <div id="loading-percentage" class="font-mono text-primary mt-2 text-xl">0%</div>
+    </div>
+
     <!-- Background subtle grid pattern -->
     <div
-      class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMyMDIwMjAiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDM0djJoLTJ2LTJoMnptMC00aDJ2MmgtMnYtMnptLTQgMHYyaC0ydi0yaDJ6bTIgMGgydjJoLTJ2LTJ6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-50"
+      class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMwMGEwZmYiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PHBhdGggZD0iTTM2IDM0djJoLTJ2LTJoMnptMC00aDJ2MmgtMnYtMnptLTQgMHYyaC0ydi0yaDJ6bTIgMGgydjJoLTJ2LTJ6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-70"
     >
     </div>
+    
+    <!-- Digital scan line effect - enhanced -->
+    <div class="scan-lines"></div>
+    
+    <!-- Electricity ripple overlay - enhanced -->
+    <div class="absolute inset-0 pointer-events-none overflow-hidden">
+      <div class="ripple-container w-full h-full opacity-25"></div> <!-- Increased opacity -->
+    </div>
+
+    <!-- Add electricity sparks - enhanced -->
+    <div class="electricity-sparks"></div>
 
     <div class="flex min-h-screen relative overflow-x-hidden content-wrapper">
       <Sidebar />
       <main
         id="main-content"
-        class="flex-1 p-4 md:p-6 ml-0 md:ml-64 transition-all duration-300 ease-in-out relative z-10 overflow-x-hidden w-full"
+        class="flex-1 p-4 md:p-6 ml-0 md:ml-64 transition-all duration-300 ease-in-out relative z-10 overflow-x-hidden w-full opacity-0"
       >
         <div
           class="transition-all duration-250 ease-in-out opacity-100 translate-y-0 mx-auto responsive-text"
@@ -68,9 +92,131 @@ const {
       </main>
     </div>
 
+    <!-- Small footer with reset button -->
+    <footer class="py-4 text-center text-xs text-muted-foreground/50">
+      <button id="reset-loading-btn" class="text-xs text-primary/60 hover:text-primary transition-colors underline cursor-pointer">Reset Loading Animation</button>
+    </footer>
+
     <script>
-      // Add scroll restoration and smooth anchor links
+      // Loading bar animation
       document.addEventListener("DOMContentLoaded", () => {
+        const loadingBar = document.getElementById("loading-bar");
+        const mainContent = document.getElementById("main-content");
+        const loadingContainer = document.getElementById("loading-container");
+        const loadingStatus = document.getElementById("loading-status");
+        const loadingPercentage = document.getElementById("loading-percentage");
+        
+        // Check if this is the first visit
+        const hasVisitedBefore = localStorage.getItem('has_visited_before');
+        
+        // If not the first visit, skip loading animation
+        if (hasVisitedBefore) {
+          if (loadingContainer) {
+            loadingContainer.style.display = "none";
+          }
+          if (mainContent) {
+            mainContent.style.opacity = "1";
+          }
+        } else {
+          // Set the flag for future visits
+          localStorage.setItem('has_visited_before', 'true');
+          
+          // Status messages that appear during loading
+          const statusMessages = [
+            { threshold: 0, message: "Initializing..." },
+            { threshold: 10, message: "Loading resources..." },
+            { threshold: 25, message: "Processing projects..." },
+            { threshold: 40, message: "Rendering UI components..." },
+            { threshold: 60, message: "Optimizing content..." },
+            { threshold: 75, message: "Finalizing..." },
+            { threshold: 90, message: "Preparing site..." },
+            { threshold: 98, message: "Done" }
+          ];
+          
+          // Initialize loading bar
+          if (loadingBar) {
+            loadingBar.style.width = "0%";
+            
+            // Simulate loading progress
+            let progress = 0;
+            const totalDuration = 2500; // 2.5 seconds total
+            const interval = 20; // Update every 20ms
+            const increment = interval / totalDuration * 100;
+            
+            const progressInterval = setInterval(() => {
+              progress += increment;
+              
+              // Make the progress non-linear for a more realistic feel
+              const displayProgress = Math.min(100, progress <= 85 
+                ? progress 
+                : progress + Math.pow((progress - 85) / 5, 2));
+              
+              // Update loading bar
+              loadingBar.style.width = `${displayProgress}%`;
+              
+              // Update percentage text
+              if (loadingPercentage) {
+                loadingPercentage.textContent = `${Math.round(displayProgress)}%`;
+              }
+              
+              // Update status message
+              if (loadingStatus) {
+                for (let i = statusMessages.length - 1; i >= 0; i--) {
+                  if (displayProgress >= statusMessages[i].threshold) {
+                    loadingStatus.textContent = statusMessages[i].message;
+                    // Add typewriter effect to the status message
+                    loadingStatus.style.borderRight = "2px solid hsl(var(--primary))";
+                    setTimeout(() => {
+                      if (loadingStatus) {
+                        loadingStatus.style.borderRight = "none";
+                      }
+                    }, 500);
+                    break;
+                  }
+                }
+              }
+              
+              if (progress >= 100) {
+                clearInterval(progressInterval);
+                
+                // Finalize with "Complete" message
+                if (loadingStatus) {
+                  loadingStatus.textContent = "Complete";
+                }
+                
+                // Fade out loading container after a short delay
+                setTimeout(() => {
+                  if (loadingContainer) {
+                    loadingContainer.style.transition = "opacity 0.5s ease-in-out";
+                    loadingContainer.style.opacity = "0";
+                    
+                    // Show content and remove loading container after fade out
+                    setTimeout(() => {
+                      if (mainContent) {
+                        mainContent.style.transition = "opacity 0.5s ease-in-out";
+                        mainContent.style.opacity = "1";
+                      }
+                      
+                      if (loadingContainer) {
+                        loadingContainer.style.display = "none";
+                      }
+                    }, 500);
+                  }
+                }, 300);
+              }
+            }, interval);
+          }
+        }
+
+        // Reset loading animation button
+        const resetBtn = document.getElementById('reset-loading-btn');
+        if (resetBtn) {
+          resetBtn.addEventListener('click', () => {
+            localStorage.removeItem('has_visited_before');
+            window.location.reload();
+          });
+        }
+
         // Handle anchor links with smooth scrolling
         document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
           anchor.addEventListener("click", (e) => {
@@ -95,5 +241,94 @@ const {
         }
       });
     </script>
+    
+    <style>
+      /* Water ripple effect - updated for enhanced electric blue */
+      .ripple-container {
+        background: radial-gradient(circle at center, transparent 0%, rgba(0, 180, 255, 0.08) 10%, transparent 20%);
+        background-size: 180% 180%;
+        animation: ripple 15s ease-in-out infinite alternate;
+      }
+      
+      @keyframes ripple {
+        0% {
+          background-position: 0% 0%;
+        }
+        25% {
+          background-position: 50% 25%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        75% {
+          background-position: 75% 75%;
+        }
+        100% {
+          background-position: 0% 100%;
+        }
+      }
+      
+      /* Scan lines effect - enhanced for electric blue */
+      .scan-lines {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 3;
+        pointer-events: none;
+        background: 
+          linear-gradient(
+            to bottom,
+            transparent 50%,
+            rgba(0, 180, 255, 0.03) 50%
+          );
+        background-size: 100% 4px;
+        opacity: 0.25; /* Increased opacity */
+      }
+      
+      /* Electricity sparks effect - enhanced */
+      .electricity-sparks {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 2;
+        pointer-events: none;
+        background: 
+          radial-gradient(circle at 10% 20%, rgba(0, 180, 255, 0.4) 0%, transparent 0.5%),
+          radial-gradient(circle at 90% 40%, rgba(0, 180, 255, 0.3) 0%, transparent 0.5%),
+          radial-gradient(circle at 30% 80%, rgba(0, 180, 255, 0.4) 0%, transparent 0.5%),
+          radial-gradient(circle at 70% 10%, rgba(0, 180, 255, 0.3) 0%, transparent 0.5%);
+        opacity: 0;
+        animation: electric-sparks 8s ease-in-out infinite;
+      }
+
+      @keyframes electric-sparks {
+        0%, 20%, 40%, 60%, 80%, 100% {
+          opacity: 0;
+          background-position: 10% 20%, 90% 40%, 30% 80%, 70% 10%;
+        }
+        10%, 30%, 50%, 70%, 90% {
+          opacity: 0.4; /* Increased opacity */
+          background-position: 15% 25%, 85% 45%, 35% 75%, 65% 15%;
+        }
+      }
+      
+      /* Add futuristic glow to elements with primary color - enhanced */
+      :root {
+        --glow-animation: glow 2s ease-in-out infinite alternate;
+      }
+      
+      @keyframes glow {
+        0% {
+          filter: drop-shadow(0 0 3px hsla(var(--primary), 0.4));
+        }
+        100% {
+          filter: drop-shadow(0 0 12px hsla(var(--primary), 0.8)); /* Enhanced glow */
+        }
+      }
+    </style>
   </body>
 </html>

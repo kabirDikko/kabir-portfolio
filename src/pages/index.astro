@@ -16,6 +16,9 @@ import {
   ArrowRight,
 } from "lucide-astro";
 
+// For GitHub Pages compatibility
+const siteBase = import.meta.env.BASE_URL || '/';
+
 const latestBlogPosts = (await getCollection("blog"))
   .sort(
     (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
@@ -32,54 +35,153 @@ const latestProjects = (await getCollection("projects"))
 
 <Layout title="Kabir Dikko - Cloud Engineer">
   <div class="page-container pt-0">
-    <!-- Hero Section -->
+    <!-- Hero Section with enhanced electric effects -->
     <section
       id="hero"
-      class="min-h-[calc(100vh-8rem)] flex flex-col justify-center animate-on-scroll visible"
+      class="min-h-[calc(100vh-8rem)] flex flex-col justify-center animate-on-scroll visible relative"
     >
-      <div class="py-12 md:py-20 md:w-3/4">
+      <!-- Circuit Board Animation - Enhanced intensity -->
+      <div class="circuit-container">
+        <div class="circuit-grid"></div>
+        <!-- Circuit animations will be added by JavaScript -->
+      </div>
+      
+      <!-- Binary Background - Enhanced -->
+      <div class="binary-bg">
+        <!-- Binary elements will be added by JavaScript -->
+      </div>
+      
+      <!-- Electric Arc Effect - Enhanced intensity -->
+      <div class="electric-arcs">
+        <!-- Electric arcs will be added by JavaScript -->
+      </div>
+      
+      <div class="py-12 md:py-20 md:w-3/4 relative z-2">
         <div
-          class="inline-block px-3 py-1 mb-6 text-xs font-semibold bg-primary/10 text-primary rounded-full border border-primary/20"
+          class="inline-block px-3 py-1 mb-6 text-xs font-semibold bg-black/30 text-primary rounded-sm border border-primary/50 shadow-[0_0_8px_hsla(var(--primary),0.4)]"
         >
-          🏅 5x AWS Certified Cloud Engineer
+          Cloud Engineer & DevOps Specialist
         </div>
         <h1 class="text-4xl md:text-6xl font-bold mb-6">
-          <div class="text-gradient-primary mb-6">Kabir Dikko</div>
+          <div class="text-gradient-primary mb-6 typewriter-name">Kabir Dikko</div>
           <div
-            class="text-muted-foreground/80 text-4xl md:text-5xl font-light leading-tight"
+            class="text-muted-foreground/90 text-4xl md:text-5xl font-light leading-tight typewriter-tagline"
           >
-            Architecting
-            <span class="text-primary/80 font-medium"
-              >enterprise-grade cloud solutions</span
-            > with certified expertise
+            I design
+            <span class="text-primary font-medium"
+              >reliable cloud infrastructure</span
+            > for complex challenges
           </div>
         </h1>
-        <div class="flex flex-col sm:flex-row gap-4">
+        <div class="flex flex-col sm:flex-row gap-4 mt-8">
           <a
-            href="/projects"
-            class="px-6 py-3 bg-primary text-primary-foreground rounded-md font-medium hover:bg-primary/90 transition-colors inline-flex items-center group border border-primary/20 shadow-sm"
+            href={`${siteBase}projects`}
+            class="btn-electric px-6 py-3 bg-primary text-primary-foreground rounded-sm font-medium hover:bg-primary/90 transition-colors inline-flex items-center group border border-primary/20 shadow-[0_0_12px_hsla(var(--primary),0.5)]"
           >
-            View My Work
+            View Projects
             <ArrowRight
               size={16}
               class="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform"
             />
           </a>
           <a
-            href="/contact"
-            class="px-6 py-3 bg-accent/60 text-accent-foreground rounded-md font-medium hover:bg-accent/90 transition-colors border border-border/30 shadow-sm"
+            href={`${siteBase}contact`}
+            class="btn-electric px-6 py-3 bg-accent/70 text-accent-foreground rounded-sm font-medium hover:bg-accent/90 transition-colors border border-primary/40 shadow-[0_0_8px_hsla(var(--primary),0.4)]"
           >
-            Get In Touch
+            Contact Me
           </a>
         </div>
+      </div>
+    </section>
+
+    <!-- Recent Projects -->
+    <section id="projects" class="section animate-on-scroll visible">
+      <SectionHeading
+        title="Work & Projects"
+        subtitle="Selected cloud infrastructure and DevOps projects I've developed."
+      >
+        <a
+          href={`${siteBase}projects`}
+          class="text-primary hover:underline inline-flex items-center text-sm font-medium mt-2"
+        >
+          All projects <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="w-4 h-4"><path d="m9 18 6-6-6-6"></path></svg
+          >
+        </a>
+      </SectionHeading>
+
+      <div class="grid md:grid-cols-2 gap-6">
+        {
+          latestProjects.map((project) => (
+            <ProjectCard
+              title={project.data.title}
+              description={project.data.description}
+              imageUrl={project.data.heroImage}
+              tags={project.data.tags}
+              repoUrl={project.data.repoUrl}
+              liveUrl={project.data.liveUrl}
+            />
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- Latest Blog Posts -->
+    <section id="blog" class="section animate-on-scroll visible">
+      <SectionHeading
+        title="Articles"
+        subtitle="Technical insights on cloud technology and infrastructure."
+      >
+        <a
+          href={`${siteBase}blog`}
+          class="text-primary hover:underline inline-flex items-center text-sm font-medium mt-2"
+        >
+          More articles <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="w-4 h-4"><path d="m9 18 6-6-6-6"></path></svg
+          >
+        </a>
+      </SectionHeading>
+
+      <div class="grid md:grid-cols-2 gap-6">
+        {
+          latestBlogPosts.map((post) => (
+            <BlogCard
+              title={post.data.title}
+              excerpt={post.data.excerpt}
+              date={post.data.date}
+              readTime={`${Math.ceil(post.data.excerpt.length / 500)} min read`}
+              category={post.data.category}
+              slug={post.slug}
+              imageUrl={post.data.image}
+            />
+          ))
+        }
       </div>
     </section>
 
     <!-- Certifications Section -->
     <section id="certifications" class="section animate-on-scroll visible">
       <SectionHeading
-        title="Industry Certifications"
-        subtitle="AWS Solutions Architect Professional with 5 AWS certifications, including the cutting-edge AWS AI Practitioner certification in addition to Certified Kubernetes Administrator (CKA) and HashiCorp Terraform Associate certifications."
+        title="Certifications"
+        subtitle="AWS, Kubernetes, and Terraform certifications."
       />
 
       <div class="certification-scroller-container">
@@ -142,92 +244,9 @@ const latestProjects = (await getCollection("projects"))
               icon: Cloud,
             },
           ]}
-          speed="normal"
+          speed="fast"
           pauseOnHover={true}
         />
-      </div>
-    </section>
-
-    <!-- Recent Projects -->
-    <section id="projects" class="section animate-on-scroll visible">
-      <SectionHeading
-        title="Recent Projects"
-        subtitle="A selection of my recent DevOps and infrastructure projects."
-      >
-        <a
-          href="/projects"
-          class="text-primary hover:underline inline-flex items-center text-sm font-medium mt-2"
-        >
-          View all projects <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="w-4 h-4"><path d="m9 18 6-6-6-6"></path></svg
-          >
-        </a>
-      </SectionHeading>
-
-      <div class="grid md:grid-cols-2 gap-6">
-        {
-          latestProjects.map((project) => (
-            <ProjectCard
-              title={project.data.title}
-              description={project.data.description}
-              imageUrl={project.data.heroImage}
-              tags={project.data.tags}
-              repoUrl={project.data.repoUrl}
-              liveUrl={project.data.liveUrl}
-            />
-          ))
-        }
-      </div>
-    </section>
-
-    <!-- Latest Blog Posts -->
-    <section id="blog" class="section animate-on-scroll visible">
-      <SectionHeading
-        title="Latest Articles"
-        subtitle="Technical insights, tutorials, and best practices on DevOps, cloud infrastructure, and more."
-      >
-        <a
-          href="/blog"
-          class="text-primary hover:underline inline-flex items-center text-sm font-medium mt-2"
-        >
-          View all articles <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="w-4 h-4"><path d="m9 18 6-6-6-6"></path></svg
-          >
-        </a>
-      </SectionHeading>
-
-      <div class="grid md:grid-cols-2 gap-6">
-        {
-          latestBlogPosts.map((post) => (
-            <BlogCard
-              title={post.data.title}
-              excerpt={post.data.excerpt}
-              date={post.data.date}
-              readTime={`${Math.ceil(post.data.excerpt.length / 500)} min read`}
-              category={post.data.category}
-              slug={post.slug}
-              imageUrl={post.data.image}
-            />
-          ))
-        }
       </div>
     </section>
   </div>
@@ -249,5 +268,215 @@ const latestProjects = (await getCollection("projects"))
 
     const sections = document.querySelectorAll(".animate-on-scroll");
     sections.forEach((section) => observer.observe(section));
+    
+    // Add blink effect to name
+    const typewriterName = document.querySelector(".typewriter-name") as HTMLElement;
+    if (typewriterName) {
+      typewriterName.style.borderRight = "3px solid hsl(var(--primary))";
+      
+      // Create blink effect
+      setInterval(() => {
+        typewriterName.style.borderRightColor = 
+          typewriterName.style.borderRightColor === "transparent" 
+            ? "hsl(var(--primary))" 
+            : "transparent";
+      }, 750);
+    }
+    
+    // Circuit board animation - enhanced
+    const circuitContainer = document.querySelector('.circuit-container');
+    if (circuitContainer) {
+      // Set up the circuit board animation
+      const circuitElements = 30; // Increased number of circuit elements
+      
+      // Define the coordinates for predefined circuit paths
+      const circuitPaths = [
+        // Top left pattern
+        { x: '10%', y: '20%', type: 'node' },
+        { x: '10%', y: '20%', type: 'horizontal', width: '15%' },
+        { x: '25%', y: '20%', type: 'node' },
+        { x: '25%', y: '20%', type: 'vertical', height: '15%' },
+        { x: '25%', y: '35%', type: 'node' },
+        { x: '25%', y: '35%', type: 'horizontal', width: '15%' },
+        { x: '40%', y: '35%', type: 'node' },
+        
+        // Right side pattern
+        { x: '65%', y: '25%', type: 'node' },
+        { x: '65%', y: '25%', type: 'vertical', height: '25%' },
+        { x: '65%', y: '50%', type: 'node' },
+        { x: '65%', y: '50%', type: 'horizontal', width: '-20%' },
+        { x: '45%', y: '50%', type: 'node' },
+        
+        // Bottom pattern
+        { x: '20%', y: '70%', type: 'node' },
+        { x: '20%', y: '70%', type: 'horizontal', width: '30%' },
+        { x: '50%', y: '70%', type: 'node' },
+        { x: '50%', y: '70%', type: 'diagonal', width: '15%', angle: '45deg' },
+        { x: '65%', y: '80%', type: 'node' },
+        
+        // Additional connections
+        { x: '80%', y: '30%', type: 'node' },
+        { x: '80%', y: '30%', type: 'vertical', height: '40%' },
+        { x: '80%', y: '70%', type: 'node' },
+        
+        // Enhanced connections
+        { x: '15%', y: '55%', type: 'node' },
+        { x: '15%', y: '55%', type: 'horizontal', width: '10%' },
+        { x: '25%', y: '55%', type: 'node' },
+        
+        { x: '70%', y: '15%', type: 'node' },
+        { x: '70%', y: '15%', type: 'diagonal', width: '15%', angle: '-45deg' },
+        { x: '85%', y: '30%', type: 'node' },
+        
+        { x: '35%', y: '85%', type: 'node' },
+        { x: '35%', y: '85%', type: 'horizontal', width: '25%' },
+        { x: '60%', y: '85%', type: 'node' },
+        
+        { x: '90%', y: '45%', type: 'node' },
+        { x: '90%', y: '45%', type: 'vertical', height: '20%' },
+        { x: '90%', y: '65%', type: 'node' },
+        
+        // New connections for more density
+        { x: '5%', y: '40%', type: 'node' },
+        { x: '5%', y: '40%', type: 'horizontal', width: '10%' },
+        { x: '15%', y: '40%', type: 'node' },
+        
+        { x: '55%', y: '15%', type: 'node' },
+        { x: '55%', y: '15%', type: 'vertical', height: '15%' },
+        { x: '55%', y: '30%', type: 'node' },
+        
+        { x: '30%', y: '10%', type: 'node' },
+        { x: '30%', y: '10%', type: 'diagonal', width: '15%', angle: '45deg' },
+        { x: '45%', y: '25%', type: 'node' },
+      ];
+      
+      // Create circuit elements based on predefined paths
+      circuitPaths.forEach((path, index) => {
+        const element = document.createElement('div');
+        
+        if (path.type === 'node') {
+          element.className = 'circuit-node';
+          element.style.left = path.x;
+          element.style.top = path.y;
+          element.style.animation = `nodeFlash ${1 + Math.random() * 0.5}s ease-in-out ${(index * 0.1) % 2}s infinite alternate`;
+        } else {
+          element.className = `circuit-line ${path.type === 'vertical' ? 'vertical-circuit' : path.type === 'diagonal' ? 'diagonal-circuit' : 'horizontal-circuit'}`;
+          element.style.left = path.x;
+          element.style.top = path.y;
+          
+          if (path.width) {
+            const widthVal = path.width.toString();
+            if (widthVal.startsWith('-')) {
+              element.style.transform = `scaleX(-1) ${path.type === 'diagonal' ? `rotate(${path.angle || '45deg'})` : ''}`;
+              element.style.transformOrigin = 'right center';
+              element.style.width = widthVal.substring(1);
+            } else {
+              element.style.width = widthVal;
+              if (path.type === 'diagonal') {
+                element.style.transform = `rotate(${path.angle || '45deg'})`;
+                element.style.transformOrigin = 'left center';
+              }
+            }
+          }
+          
+          if (path.height) {
+            element.style.height = path.height;
+          }
+          
+          element.style.animation = `lineFlash ${1.5 + Math.random()}s ease-in-out ${(index * 0.1) % 3}s infinite`;
+        }
+        
+        circuitContainer.appendChild(element);
+      });
+    }
+    
+    // Add binary background elements - enhanced
+    const binaryBg = document.querySelector('.binary-bg');
+    if (binaryBg) {
+      const binaryRows = 20; // Increased number of binary rows
+      const binaryElements = 35; // Increased binary elements per row
+      
+      for (let i = 0; i < binaryRows; i++) {
+        // Create a row of binary
+        const row = document.createElement('div');
+        row.className = 'binary-text';
+        row.style.top = `${5 * i}%`;
+        row.style.left = `${Math.random() * 100}%`;
+        row.style.animation = `fade-binary ${5 + Math.random() * 10}s linear ${i * 0.5}s infinite`;
+        
+        // Generate binary string
+        let binaryString = '';
+        for (let j = 0; j < binaryElements; j++) {
+          binaryString += Math.random() > 0.5 ? '1' : '0';
+          binaryString += ' ';
+        }
+        
+        row.textContent = binaryString;
+        binaryBg.appendChild(row);
+      }
+    }
+    
+    // Add electric arc elements - enhanced
+    const electricArcs = document.querySelector('.electric-arcs');
+    if (electricArcs) {
+      // Create more random electric arcs
+      for (let i = 0; i < 8; i++) { // Increased number of arcs
+        const arc = document.createElement('div');
+        arc.className = 'electric-arc';
+        arc.style.position = 'absolute';
+        arc.style.width = `${50 + Math.random() * 100}px`;
+        arc.style.height = `${2 + Math.random() * 2}px`;
+        arc.style.top = `${Math.random() * 100}%`;
+        arc.style.left = `${Math.random() * 100}%`;
+        arc.style.transform = `rotate(${Math.random() * 360}deg)`;
+        arc.style.background = `linear-gradient(90deg, 
+          transparent, 
+          hsla(var(--primary), 0.5), 
+          hsla(var(--primary), 1), 
+          hsla(var(--primary), 0.5), 
+          transparent)`;
+        arc.style.boxShadow = '0 0 12px hsla(var(--primary), 0.9)';
+        arc.style.borderRadius = '3px';
+        arc.style.opacity = '0';
+        arc.style.zIndex = '1';
+        
+        // Set random animation delay for each arc
+        const delay = Math.random() * 5;
+        const duration = 0.5 + Math.random() * 1;
+        arc.style.animation = `spark ${duration}s ease-in-out ${delay}s infinite`;
+        
+        electricArcs.appendChild(arc);
+      }
+    }
   });
 </script>
+
+<style>
+  .electric-arcs {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+  
+  .electric-arc {
+    position: absolute;
+    opacity: 0;
+  }
+  
+  @keyframes spark {
+    0%, 100% { 
+      opacity: 0;
+      transform: scaleX(0.8) rotate(var(--rotation, 0deg)); 
+      box-shadow: 0 0 5px hsla(var(--primary), 0.5);
+    }
+    50% { 
+      opacity: 1;
+      transform: scaleX(1.2) rotate(var(--rotation, 0deg)); 
+      box-shadow: 0 0 15px hsla(var(--primary), 0.9);
+    }
+  }
+</style>
