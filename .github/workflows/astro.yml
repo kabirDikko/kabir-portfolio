@@ -35,6 +35,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      # Create .nojekyll file in repository root
+      - name: Create root .nojekyll file
+        run: touch .nojekyll
+        working-directory: ${{ env.BUILD_PATH }}
       - name: Detect package manager
         id: detect-package-manager
         run: |
@@ -64,13 +68,18 @@ jobs:
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
         working-directory: ${{ env.BUILD_PATH }}
+      # Create .nojekyll file in public directory
+      - name: Create public .nojekyll file 
+        run: touch public/.nojekyll
+        working-directory: ${{ env.BUILD_PATH }}
       - name: Build with Astro
         run: |
           ${{ steps.detect-package-manager.outputs.runner }} astro build \
             --site "${{ steps.pages.outputs.origin }}" \
             --base "${{ steps.pages.outputs.base_path }}"
         working-directory: ${{ env.BUILD_PATH }}
-      - name: Create .nojekyll file
+      # Create .nojekyll file in dist directory
+      - name: Create .nojekyll file in dist directory
         run: touch dist/.nojekyll
         working-directory: ${{ env.BUILD_PATH }}
       - name: Upload artifact
