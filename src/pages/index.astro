@@ -35,35 +35,35 @@ const latestProjects = (await getCollection("projects"))
 
 <Layout title="Kabir Dikko - Cloud Engineer">
   <div class="page-container pt-0">
-    <!-- Hero Section with enhanced electric effects -->
+    <!-- Hero Section with Matrix digital rain effect -->
     <section
       id="hero"
       class="min-h-[calc(100vh-8rem)] flex flex-col justify-center animate-on-scroll visible relative"
     >
-      <!-- Circuit Board Animation - Enhanced intensity -->
+      <!-- Circuit Board Animation - Matrix style -->
       <div class="circuit-container">
         <div class="circuit-grid"></div>
         <!-- Circuit animations will be added by JavaScript -->
       </div>
       
-      <!-- Binary Background - Enhanced -->
+      <!-- Binary Background - Matrix digital rain -->
       <div class="binary-bg">
-        <!-- Binary elements will be added by JavaScript -->
+        <!-- Matrix digital rain elements will be added by JavaScript -->
       </div>
       
-      <!-- Electric Arc Effect - Enhanced intensity -->
+      <!-- Electric Arc Effect - Matrix sparks -->
       <div class="electric-arcs">
-        <!-- Electric arcs will be added by JavaScript -->
+        <!-- Matrix spark effects will be added by JavaScript -->
       </div>
       
       <div class="py-12 md:py-20 md:w-3/4 relative z-2">
-        <div class="hero-content-wrapper bg-background/70 backdrop-blur-sm p-6 rounded-lg shadow-lg">
+        <div class="hero-content-wrapper bg-background/70 backdrop-blur-sm p-6 rounded-lg shadow-lg border-primary/30 border">
           <div
-            class="inline-block px-3 py-1 mb-6 text-xs font-semibold bg-black/30 text-primary rounded-sm border border-primary/50 shadow-[0_0_8px_hsla(var(--primary),0.4)]"
+            class="inline-block px-3 py-1 mb-6 text-xs font-semibold bg-black/50 text-primary rounded-sm border border-primary/50 shadow-[0_0_10px_hsla(var(--primary),0.6)]"
           >
             Cloud Engineer & DevOps Specialist
           </div>
-          <h1 class="text-4xl md:text-6xl font-bold mb-6">
+          <h1 class="text-4xl md:text-6xl font-bold mb-6" data-text="Kabir Dikko">
             <div class="text-gradient-primary mb-6 typewriter-name">Kabir Dikko</div>
             <div
               class="text-muted-foreground/90 text-4xl md:text-5xl font-light leading-tight typewriter-tagline"
@@ -79,7 +79,7 @@ const latestProjects = (await getCollection("projects"))
               href={`${siteBase}projects`}
               class="btn-electric px-6 py-3 bg-primary text-primary-foreground rounded-sm font-medium hover:bg-primary/90 transition-colors inline-flex items-center group border border-primary/20 shadow-[0_0_12px_hsla(var(--primary),0.5)]"
             >
-              View Projects
+              VIEW PROJECTS
               <ArrowRight
                 size={16}
                 class="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform"
@@ -89,7 +89,7 @@ const latestProjects = (await getCollection("projects"))
               href={`${siteBase}contact`}
               class="btn-electric px-6 py-3 bg-accent/70 text-accent-foreground rounded-sm font-medium hover:bg-accent/90 transition-colors border border-primary/40 shadow-[0_0_8px_hsla(var(--primary),0.4)]"
             >
-              Contact Me
+              CONTACT ME
             </a>
           </div>
         </div>
@@ -348,32 +348,53 @@ const latestProjects = (await getCollection("projects"))
       }
     }
     
-    // Binary background - reduced elements
+    // Binary background - Matrix digital rain
     const binaryBg = document.querySelector('.binary-bg') as HTMLElement;
     if (binaryBg) {
-      const rowCount = 10; // Reduced from typical 20
-      const binaryElements = 12; // Reduced from typical 20
+      const rowCount = 25; // More rows for Matrix feel
+      const binaryElements = 20; // More elements for Matrix feel
       
-      // Generate fewer rows of binary
+      // Generate more rows of Matrix digital rain
       for (let i = 0; i < rowCount; i++) {
         // Create a row of binary
         const row = document.createElement('div');
         row.className = 'binary-text';
-        row.style.top = `${10 * i}%`; // More spaced out
+        row.style.top = `${Math.random() * 5}%`; // Start at random positions near the top
         row.style.left = `${Math.random() * 100}%`;
-        row.style.animation = `fade-binary ${5 + Math.random() * 10}s linear ${i * 0.5}s infinite`;
         
-        // Generate binary string
+        // Random speed and delay for more realistic Matrix effect
+        const speed = 5 + Math.random() * 15; // Random speed between 5-20s
+        const delay = Math.random() * 5;
+        row.style.animation = `matrix-rain ${speed}s linear ${delay}s infinite`;
+        
+        // Generate binary string with more variety for Matrix style
         let binaryString = '';
         for (let j = 0; j < binaryElements; j++) {
-          binaryString += Math.random() > 0.5 ? '1' : '0';
+          // Mix in some special characters for authentic Matrix feel
+          const rand = Math.random();
+          if (rand < 0.7) {
+            binaryString += Math.random() > 0.5 ? '1' : '0';
+          } else if (rand < 0.8) {
+            binaryString += Math.random() > 0.5 ? '>' : '<';
+          } else if (rand < 0.9) {
+            binaryString += Math.random() > 0.5 ? '+' : '=';
+          } else {
+            binaryString += Math.random() > 0.5 ? '|' : '/'; 
+          }
           binaryString += ' ';
         }
         
         row.textContent = binaryString;
+        row.style.color = `hsla(135, 100%, ${50 + Math.random() * 30}%, ${0.5 + Math.random() * 0.5})`;
         binaryBg.appendChild(row);
       }
     }
+    
+    // Add Matrix glitch effect to headings
+    document.querySelectorAll('h1, h2, h3').forEach(heading => {
+      const text = heading.textContent || '';
+      heading.setAttribute('data-text', text);
+    });
     
     // Add electric arc elements - enhanced
     const electricArcs = document.querySelector('.electric-arcs') as HTMLElement;

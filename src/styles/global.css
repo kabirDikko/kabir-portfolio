@@ -51,7 +51,7 @@
   perspective: 1000px;
 }
 
-/* Circuit board animation for hero section - enhanced electric blue */
+/* Circuit board animation for hero section - Matrix green */
 .circuit-container {
   position: absolute;
   top: 0;
@@ -61,22 +61,22 @@
   overflow: hidden;
   pointer-events: none;
   z-index: 1;
-  opacity: 0.3; /* Reduced opacity from 0.7 to 0.3 */
+  opacity: 0.4; /* Increased opacity for Matrix theme */
   animation: circuit-pulse 8s ease-in-out infinite alternate;
 }
 
 @keyframes circuit-pulse {
   0% {
-    opacity: 0.25; /* Reduced from 0.6 */
-    filter: hue-rotate(0deg) brightness(0.9); /* Reduced brightness */
+    opacity: 0.3;
+    filter: hue-rotate(0deg) brightness(1.2); /* Brighter green glow */
   }
   50% {
-    opacity: 0.35; /* Reduced from 0.8 */
-    filter: hue-rotate(15deg) brightness(1.1); /* Reduced brightness */
+    opacity: 0.5;
+    filter: hue-rotate(10deg) brightness(1.5); /* Brighter green glow */
   }
   100% {
-    opacity: 0.3; /* Reduced from 0.7 */
-    filter: hue-rotate(0deg) brightness(0.9); /* Reduced brightness */
+    opacity: 0.4;
+    filter: hue-rotate(0deg) brightness(1.2);
   }
 }
 
@@ -87,12 +87,12 @@
   width: 100%;
   height: 100%;
   background-image: 
-    linear-gradient(to right, rgba(0, 180, 255, 0.02) 1px, transparent 1px), /* Reduced opacity */
-    linear-gradient(to bottom, rgba(0, 180, 255, 0.02) 1px, transparent 1px); /* Reduced opacity */
-  background-size: 40px 40px;
+    linear-gradient(to right, rgba(0, 255, 50, 0.05) 1px, transparent 1px), /* Matrix green grid */
+    linear-gradient(to bottom, rgba(0, 255, 50, 0.05) 1px, transparent 1px); /* Matrix green grid */
+  background-size: 20px 20px; /* Smaller grid for more Matrix feel */
 }
 
-/* Binary background elements - enhanced blue */
+/* Binary background elements - Matrix digital rain */
 .binary-bg {
   position: absolute;
   top: 0;
@@ -100,7 +100,7 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
-  opacity: 0.04; /* Reduced opacity from 0.08 */
+  opacity: 0.08; /* Increased opacity for Matrix theme */
   pointer-events: none;
   z-index: 0;
 }
@@ -109,49 +109,61 @@
   position: absolute;
   color: hsl(var(--primary));
   font-family: 'JetBrains Mono', monospace;
-  font-size: 16px;
+  font-size: 14px; /* Smaller binary for Matrix feel */
   white-space: nowrap;
   opacity: 0;
-  animation: fade-binary 10s linear infinite;
-  text-shadow: 0 0 3px hsla(var(--primary), 0.3); /* Reduced glow */
+  animation: matrix-rain 10s linear infinite;
+  text-shadow: 0 0 8px hsla(var(--primary), 0.7); /* Enhanced glow */
 }
 
-@keyframes fade-binary {
-  0%, 100% { opacity: 0; }
-  50% { opacity: 0.3; } /* Reduced peak opacity from 0.5 */
+@keyframes matrix-rain {
+  0% { 
+    opacity: 0; 
+    transform: translateY(-100px);
+  }
+  10% { 
+    opacity: 0.7; 
+  }
+  90% { 
+    opacity: 0.7; 
+  }
+  100% { 
+    opacity: 0; 
+    transform: translateY(calc(100vh + 100px)); 
+  }
 }
 
-/* Circuit animations - enhanced electric blue */
+/* Circuit animations - Matrix green */
 .circuit-line {
   position: absolute;
   background: linear-gradient(90deg, 
     transparent, 
-    hsl(var(--primary)/0.3), /* Reduced opacity */
-    hsl(var(--primary)/0.7), /* Reduced opacity */
-    hsl(var(--primary)/0.3), /* Reduced opacity */
+    hsl(var(--primary)/0.5), 
+    hsl(var(--primary)), 
+    hsl(var(--primary)/0.5), 
     transparent);
-  height: 2px; /* Reduced from 3px */
+  height: 2px;
   width: 100px;
-  border-radius: 2px;
-  filter: drop-shadow(0 0 4px hsl(var(--primary)/0.5)); /* Reduced glow */
+  border-radius: 0; /* Sharp edges for Matrix style */
+  filter: drop-shadow(0 0 5px hsl(var(--primary))); /* Enhanced glow */
   opacity: 0;
   transform-origin: center;
 }
 
 .circuit-node {
   position: absolute;
-  width: 6px; /* Reduced from 8px */
-  height: 6px; /* Reduced from 8px */
+  width: 6px;
+  height: 6px;
   background: hsl(var(--primary));
-  border-radius: 50%;
-  filter: drop-shadow(0 0 5px hsl(var(--primary)/0.5)); /* Reduced glow */
+  border-radius: 0; /* Square nodes for Matrix style */
+  filter: drop-shadow(0 0 8px hsl(var(--primary))); /* Enhanced glow */
   opacity: 0;
   z-index: 2;
 }
 
 .vertical-circuit {
   height: 100px;
-  width: 3px;
+  width: 2px;
   background: linear-gradient(0deg, 
     transparent, 
     hsl(var(--primary)/0.5), 
@@ -161,7 +173,7 @@
 }
 
 .horizontal-circuit {
-  height: 3px;
+  height: 2px;
   width: 100px;
   background: linear-gradient(90deg, 
     transparent, 
@@ -172,7 +184,7 @@
 }
 
 .diagonal-circuit {
-  height: 3px;
+  height: 2px;
   width: 100px;
   transform: rotate(45deg);
   background: linear-gradient(90deg, 
@@ -183,21 +195,21 @@
     transparent);
 }
 
-/* Electric animations - reduced glow */
+/* Matrix-style animations */
 @keyframes nodeFlash {
-  0%, 100% { opacity: 0.3; transform: scale(1); filter: drop-shadow(0 0 4px hsl(var(--primary)/0.5)); }
-  50% { opacity: 0.7; transform: scale(1.5); filter: drop-shadow(0 0 8px hsl(var(--primary)/0.7)); } /* Reduced glow */
+  0%, 100% { opacity: 0.4; transform: scale(1); filter: drop-shadow(0 0 5px hsl(var(--primary)/0.6)); }
+  50% { opacity: 1; transform: scale(1.5); filter: drop-shadow(0 0 10px hsl(var(--primary))); }
 }
 
 @keyframes lineFlash {
-  0%, 100% { opacity: 0.2; transform: scaleX(0.8); filter: drop-shadow(0 0 3px hsl(var(--primary)/0.3)); }
-  50% { opacity: 0.6; transform: scaleX(1); filter: drop-shadow(0 0 6px hsl(var(--primary)/0.6)); } /* Reduced glow */
+  0%, 100% { opacity: 0.3; transform: scaleX(0.8); filter: drop-shadow(0 0 4px hsl(var(--primary)/0.5)); }
+  50% { opacity: 0.8; transform: scaleX(1); filter: drop-shadow(0 0 10px hsl(var(--primary))); }
 }
 
-/* Reduce electric spark animation */
+/* Matrix spark animation */
 @keyframes spark {
   0%, 100% { opacity: 0; }
-  50% { opacity: 0.7; transform: scale(1.2) rotate(10deg); filter: drop-shadow(0 0 6px hsl(var(--primary)/0.6)); } /* Reduced glow */
+  50% { opacity: 0.9; transform: scale(1.2) rotate(10deg); filter: drop-shadow(0 0 12px hsl(var(--primary))); }
 }
 
 /* Core layout rules to prevent horizontal scrolling */
@@ -237,7 +249,7 @@ body {
     background: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--background)/0.8) 100%);
   }
 
-  /* Add water-like reflection effect - updated for electric blue theme */
+  /* Add Matrix digital rain reflection effect */
   body::before {
     content: "";
     position: fixed;
@@ -245,23 +257,38 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(0deg, rgba(0, 100, 255, 0.03) 0%, transparent 15%); /* Reduced opacity */
+    background: linear-gradient(0deg, rgba(0, 255, 50, 0.05) 0%, transparent 20%);
     pointer-events: none;
     z-index: 0;
-    animation: water-ripple 15s ease-in-out infinite alternate;
+    animation: matrix-flicker 15s ease-in-out infinite alternate;
   }
 
-  @keyframes water-ripple {
+  @keyframes matrix-flicker {
     0% {
-      opacity: 0.1; /* Reduced from 0.2 */
+      opacity: 0.15;
       background-position: 0% 0%;
     }
+    5% {
+      opacity: 0.2;
+    }
+    10% {
+      opacity: 0.15;
+    }
+    15% {
+      opacity: 0.2;
+    }
     50% {
-      opacity: 0.15; /* Reduced from 0.3 */
+      opacity: 0.25;
       background-position: 100% 100%;
     }
+    90% {
+      opacity: 0.2;
+    }
+    95% {
+      opacity: 0.25;
+    }
     100% {
-      opacity: 0.1; /* Reduced from 0.2 */
+      opacity: 0.2;
       background-position: 0% 0%;
     }
   }
@@ -400,8 +427,8 @@ body {
 
   .text-gradient-primary {
     @apply bg-gradient-to-br from-primary via-primary/90 to-primary/70 bg-clip-text text-transparent;
-    filter: drop-shadow(0 0 5px hsla(var(--primary), 0.5)); /* Reduced glow */
-    animation: text-glow 3s ease-in-out infinite alternate;
+    filter: drop-shadow(0 0 8px hsla(var(--primary), 0.7)); /* Enhanced glow */
+    animation: matrix-text-glow 4s ease-in-out infinite alternate;
   }
 
   /* Add responsive text handling */
@@ -631,15 +658,16 @@ body {
 /* Typewriter effect styles - enhanced glow */
 .typewriter-name {
   overflow: visible;
-  border-right: 3px solid hsl(var(--primary));
+  border-right: 4px solid hsl(var(--primary));
   white-space: nowrap;
   width: auto;
   margin: 0;
   animation: 
     blink-caret 0.75s step-end infinite;
-  filter: drop-shadow(0 0 8px hsla(var(--primary), 0.6)); /* Enhanced glow */
+  filter: drop-shadow(0 0 10px hsla(var(--primary), 0.8)); /* Enhanced glow */
   font-family: 'JetBrains Mono', monospace;
   display: inline-block;
+  letter-spacing: 2px; /* More spaced out for Matrix style */
 }
 
 .typewriter-tagline {
@@ -649,6 +677,7 @@ body {
   white-space: normal;
   border-right: 0px solid transparent;
   font-family: 'JetBrains Mono', monospace;
+  filter: drop-shadow(0 0 5px hsla(var(--primary), 0.5));
 }
 
 /* Futuristic button styles - updated for blue electricity theme */
@@ -677,9 +706,11 @@ a[href]:hover:after, button:hover:after {
   left: 100%;
 }
 
-/* Add binary pattern to card backgrounds - updated for blue theme */
+/* Add binary pattern to card backgrounds - updated for Matrix green theme */
 .glass-card, .neo-glass {
   position: relative;
+  border-radius: 0 !important; /* Sharp edges for Matrix style */
+  border: 1px solid hsla(var(--primary), 0.3) !important; /* More visible green border */
 }
 
 .glass-card::after, .neo-glass::after {
@@ -689,40 +720,100 @@ a[href]:hover:after, button:hover:after {
   height: 100%;
   top: 0;
   left: 0;
-  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='10' y='20' font-family='monospace' font-size='10' fill='rgba(0,150,255,0.03)' transform='rotate(45 30 30)'%3E01%3C/text%3E%3Ctext x='30' y='40' font-family='monospace' font-size='10' fill='rgba(0,150,255,0.03)' transform='rotate(45 30 30)'%3E10%3C/text%3E%3C/svg%3E");
-  opacity: 0.12;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='10' y='20' font-family='monospace' font-size='10' fill='rgba(0,255,50,0.05)' transform='rotate(45 30 30)'%3E01%3C/text%3E%3Ctext x='30' y='40' font-family='monospace' font-size='10' fill='rgba(0,255,50,0.05)' transform='rotate(45 30 30)'%3E10%3C/text%3E%3C/svg%3E");
+  opacity: 0.2;
   pointer-events: none;
 }
 
-/* Add electric spark animation to buttons */
+/* Add Matrix code rain to buttons */
 .btn-electric {
   position: relative;
   overflow: hidden;
+  border-radius: 0 !important; /* Sharp edges for Matrix style */
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: bold;
 }
 
 .btn-electric:before {
   content: '';
   position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
+  top: -100%;
+  left: 0;
+  width: 100%;
   height: 200%;
-  background: radial-gradient(circle, hsla(var(--primary), 0.8) 0%, transparent 70%);
+  background: linear-gradient(to bottom, 
+    transparent 0%, 
+    hsla(var(--primary), 0.2) 40%, 
+    hsla(var(--primary), 0.8) 50%, 
+    hsla(var(--primary), 0.2) 60%, 
+    transparent 100%);
   opacity: 0;
   pointer-events: none;
-  animation: electric-pulse 2s ease-in-out infinite;
+  animation: matrix-code-rain 2s ease-in-out infinite;
 }
 
-@keyframes electric-pulse {
-  0%, 100% { opacity: 0; transform: scale(0.5); }
-  50% { opacity: 0.3; transform: scale(1); }
+@keyframes matrix-code-rain {
+  0%, 100% { opacity: 0; transform: translateY(-100%); }
+  50% { opacity: 0.8; transform: translateY(100%); }
 }
 
-@keyframes text-glow {
+/* Matrix style terminal cursor */
+@keyframes blink-caret {
+  from, to { border-color: transparent; }
+  50% { border-color: hsl(var(--primary)); }
+}
+
+/* Matrix glitch effect for headings */
+h1, h2, h3 {
+  position: relative;
+}
+
+h1:after, h2:after, h3:after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: hsl(var(--primary));
+  overflow: hidden;
+  clip: rect(0, 900px, 0, 0);
+  animation: matrix-glitch 3s infinite linear alternate-reverse;
+}
+
+@keyframes matrix-glitch {
   0% {
-    filter: drop-shadow(0 0 3px hsla(var(--primary), 0.3));
+    clip: rect(0, 900px, 0, 0);
+    opacity: 0;
+  }
+  1% {
+    clip: rect(0, 900px, 5px, 0);
+    opacity: 0.5;
+  }
+  2% {
+    clip: rect(0, 900px, 0, 0);
+    opacity: 0;
+  }
+  95% {
+    clip: rect(0, 900px, 0, 0);
+    opacity: 0;
+  }
+  96% {
+    clip: rect(0, 900px, 5px, 0);
+    opacity: 0.5;
+    transform: translateX(2px);
+  }
+  97% {
+    clip: rect(0, 900px, 10px, 0);
+    opacity: 0.7;
+    transform: translateX(-2px);
+  }
+  98% {
+    clip: rect(0, 900px, 5px, 0);
+    opacity: 0.5;
+    transform: translateX(0);
   }
   100% {
-    filter: drop-shadow(0 0 5px hsla(var(--primary), 0.5));
+    clip: rect(0, 900px, 0, 0);
+    opacity: 0;
   }
 }
