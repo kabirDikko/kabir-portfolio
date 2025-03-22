@@ -30,6 +30,14 @@ const siteBase = import.meta.env.BASE_URL || '/';
       max-width: 100%;
     }
 
+    /* Make name fit better on mobile */
+    .sidebar-name {
+      font-size: 1.1rem !important;
+      white-space: normal !important;
+      overflow: visible !important;
+      padding-right: 0.5rem;
+    }
+
     /* Staggered animation for nav items when sidebar opens */
     #sidebar:not(.-translate-x-full) .sidebar-link {
       animation: slideInRight 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
@@ -89,7 +97,7 @@ const siteBase = import.meta.env.BASE_URL || '/';
     <div
       class="p-6 border-b border-sidebar-border flex items-center gap-3 overflow-hidden"
     >
-      <h1 class="font-bold text-xl font-mono truncate">Kabir Dikko</h1>
+      <h1 class="font-bold text-xl font-mono truncate sidebar-name">Kabir Dikko</h1>
     </div>
 
     {/* Main Navigation */}
