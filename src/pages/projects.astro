@@ -5,6 +5,9 @@ import ProjectCard from "../components/ProjectCard.astro";
 import { getCollection } from "astro:content";
 import { Search, ChevronLeft, ChevronRight } from "lucide-astro";
 
+// For GitHub Pages compatibility
+const siteBase = import.meta.env.BASE_URL || '/';
+
 // Get projects from the content collection
 const allProjects = await getCollection("projects");
 
@@ -142,8 +145,8 @@ if (currentPage < totalPages) {
             />
             {project.slug && (
               <a
-                href={`/project/${project.slug}`}
-                class="absolute inset-0 z-10"
+                href={`${siteBase}project/${project.slug}`}
+                class="absolute inset-0 z-10 touch-action-manipulation"
                 aria-label={`View ${project.data.title} details`}
               />
             )}

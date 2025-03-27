@@ -671,6 +671,32 @@ body {
     text-decoration: underline;
     text-underline-offset: 2px;
     text-decoration-thickness: 0.5px;
+    -webkit-tap-highlight-color: transparent; /* Remove default tap highlight */
+  }
+  
+  /* Improved tap feedback for links */
+  a[href]:active {
+    transform: scale(0.98);
+    opacity: 0.8;
+    transition: transform 0.1s, opacity 0.1s;
+  }
+  
+  /* Fix link overlap issues that can cause tap problems */
+  a[href] {
+    position: relative;
+    z-index: 1;
+  }
+  
+  /* Increase minimum tap target sizes to meet accessibility standards (44x44px) */
+  a, button, [role="button"], input[type="submit"], input[type="button"] {
+    min-height: 44px;
+    min-width: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  .project-card a.absolute, .blog-card a.absolute {
+    min-height: auto; /* Override for absolute positioned links */
   }
   
   /* Buttons need to be larger on mobile for better tap targets */
