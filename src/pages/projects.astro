@@ -146,8 +146,9 @@ if (currentPage < totalPages) {
             {project.slug && (
               <a
                 href={`${siteBase}project/${project.slug}`}
-                class="absolute inset-0 z-10 touch-action-manipulation"
+                class="absolute inset-0 z-10 touch-action-manipulation clickable-card"
                 aria-label={`View ${project.data.title} details`}
+                tabindex="0"
               />
             )}
           </div>
@@ -371,6 +372,38 @@ if (currentPage < totalPages) {
 
     searchInput.addEventListener("input", () => {
       filterProjects();
+    });
+
+    // Add special handling for project cards to ensure they work on mobile
+    projectCards.forEach(card => {
+      const link = card.querySelector('a.absolute') as HTMLAnchorElement | null;
+      const cardLinks = card.querySelectorAll('a:not(.absolute)');
+      
+      if (link) {
+        // Add a click handler to the whole card
+        card.addEventListener('click', (e) => {
+          const target = e.target as HTMLElement;
+          // Only navigate if clicked directly on the card or the absolute link
+          // Don't navigate if clicking on internal links (repo/demo) or other interactive elements
+          if (target === card || target === link || 
+              card.contains(target) && !Array.from(cardLinks).some(el => el === target || el.contains(target))) {
+            const href = link.getAttribute('href');
+            if (href) {
+              window.location.href = href;
+            }
+          }
+        });
+        
+        // Make the card visually interactive
+        (card as HTMLElement).style.cursor = 'pointer';
+      }
+      
+      // Prevent links inside the card from triggering the card's link
+      cardLinks.forEach(innerLink => {
+        innerLink.addEventListener('click', (e) => {
+          e.stopPropagation();
+        });
+      });
     });
   });
 </script>

@@ -124,14 +124,24 @@ const latestProjects = (await getCollection("projects"))
       <div class="grid md:grid-cols-2 gap-6">
         {
           latestProjects.map((project) => (
-            <ProjectCard
-              title={project.data.title}
-              description={project.data.description}
-              imageUrl={project.data.heroImage}
-              tags={project.data.tags}
-              repoUrl={project.data.repoUrl}
-              liveUrl={project.data.liveUrl}
-            />
+            <div class="relative group project-card" data-tags={JSON.stringify(project.data.tags)}>
+              <ProjectCard
+                title={project.data.title}
+                description={project.data.description}
+                imageUrl={project.data.heroImage}
+                tags={project.data.tags}
+                repoUrl={project.data.repoUrl}
+                liveUrl={project.data.liveUrl}
+              />
+              {project.slug && (
+                <a
+                  href={`${siteBase}project/${project.slug}`}
+                  class="absolute inset-0 z-10 touch-action-manipulation clickable-card"
+                  aria-label={`View ${project.data.title} details`}
+                  tabindex="0"
+                />
+              )}
+            </div>
           ))
         }
       </div>
@@ -428,6 +438,33 @@ const latestProjects = (await getCollection("projects"))
         electricArcs.appendChild(arc);
       }
     }
+
+    // Add special handling for project cards to ensure they work on mobile
+    const projectCards = document.querySelectorAll('.project-card');
+    projectCards.forEach(card => {
+      const link = card.querySelector('a.absolute') as HTMLAnchorElement | null;
+      const cardLinks = card.querySelectorAll('a:not(.absolute)');
+      
+      if (link) {
+        // Add a click handler to the whole card
+        card.addEventListener('click', () => {
+          const href = link.getAttribute('href');
+          if (href) {
+            window.location.href = href;
+          }
+        });
+        
+        // Make the card visually interactive
+        (card as HTMLElement).style.cursor = 'pointer';
+      }
+      
+      // Prevent links inside the card from triggering the card's link
+      cardLinks.forEach(innerLink => {
+        innerLink.addEventListener('click', (e) => {
+          e.stopPropagation();
+        });
+      });
+    });
   });
 </script>
 

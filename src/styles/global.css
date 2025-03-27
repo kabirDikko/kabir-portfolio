@@ -538,7 +538,7 @@ body {
     left: 0;
     right: 0;
     height: 30%;
-    background: linear-gradient(to top, rgba(0, 180, 255, 0.06), transparent); /* Increased intensity */
+    background: linear-gradient(to top, rgba(0, 255, 50, 0.06), transparent); /* Matrix green glow */
     z-index: 1;
     transform: translateY(50%);
     transition: transform 0.5s ease;
@@ -553,6 +553,37 @@ body {
   .project-card:hover, .blog-card:hover {
     box-shadow: 0 0 20px hsla(var(--primary), 0.6); /* Enhanced glow */
     transform: translateY(-5px) scale(1.01); /* Added subtle scale */
+  }
+
+  /* Add visual indicator for clickable cards */
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24' fill='none' stroke='%2300ff32' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6'%3E%3C/path%3E%3Cpath d='M15 3h6v6'%3E%3C/path%3E%3Cpath d='M10 14L21 3'%3E%3C/path%3E%3C/svg%3E") center/contain no-repeat;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .project-card:hover::before {
+    opacity: 0.8;
+  }
+
+  /* Indicate active state for mobile taps */
+  .project-card:active, .blog-card:active {
+    transform: translateY(-2px) scale(0.99);
+    transition: transform 0.1s ease;
+  }
+
+  @media (max-width: 768px) {
+    .project-card::before {
+      opacity: 0.4; /* Show the indicator faintly on mobile */
+    }
   }
 
   /* Text readability improvements */
@@ -819,6 +850,42 @@ body {
 a[href], button {
   position: relative;
   overflow: hidden;
+}
+
+/* Special class for clickable card overlays */
+.clickable-card {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+  transition: background-color 0.2s;
+}
+
+.clickable-card:active {
+  background-color: rgba(0, 255, 50, 0.1); /* Subtle Matrix green flash on tap */
+}
+
+/* Add a faint outline to make it clearer that cards are clickable on mobile */
+@media (max-width: 768px) {
+  .project-card {
+    position: relative;
+  }
+  
+  .project-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    border: 2px solid transparent;
+    transition: border-color 0.3s;
+  }
+  
+  .project-card:active::after {
+    border-color: hsla(var(--primary), 0.5);
+    box-shadow: 0 0 15px hsla(var(--primary), 0.5);
+  }
 }
 
 a[href]:after, button:after {
