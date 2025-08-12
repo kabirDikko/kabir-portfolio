@@ -474,8 +474,20 @@ body {
 
   .text-gradient-primary {
     @apply bg-gradient-to-br from-primary via-primary/90 to-primary/70 bg-clip-text text-transparent;
-    filter: drop-shadow(0 0 8px hsla(var(--primary), 0.7)); /* Enhanced glow */
+    filter: drop-shadow(0 0 12px hsla(var(--primary), 0.8));
     animation: matrix-text-glow 4s ease-in-out infinite alternate;
+  }
+
+  @keyframes matrix-text-glow {
+    0% {
+      filter: drop-shadow(0 0 8px hsla(var(--primary), 0.6));
+    }
+    50% {
+      filter: drop-shadow(0 0 20px hsla(var(--primary), 0.9));
+    }
+    100% {
+      filter: drop-shadow(0 0 8px hsla(var(--primary), 0.6));
+    }
   }
 
   /* Add responsive text handling */

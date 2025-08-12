@@ -402,6 +402,7 @@ if (currentPage < totalPages) {
       cardLinks.forEach(innerLink => {
         innerLink.addEventListener('click', (e) => {
           e.stopPropagation();
+          // Allow the link to work normally by not preventing default
         });
       });
     });

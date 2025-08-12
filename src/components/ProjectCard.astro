@@ -14,7 +14,7 @@ const { title, description, imageUrl, tags, repoUrl, liveUrl } = Astro.props;
 ---
 
 <div
-  class="glass-card project-card group overflow-hidden transition-all duration-300 hover:border-primary/50 flex flex-col"
+  class="glass-card project-card group overflow-hidden transition-all duration-300 hover:border-primary/50 flex flex-col hover:shadow-[0_0_30px_hsla(var(--primary),0.3)] border-0"
 >
   {
     imageUrl && (
@@ -37,17 +37,17 @@ const { title, description, imageUrl, tags, repoUrl, liveUrl } = Astro.props;
   }
   <div class="p-6 flex-1 flex flex-col relative z-1">
     <h3
-      class="text-xl font-semibold mb-2 text-foreground group-hover:text-primary transition-colors duration-200"
+      class="text-xl font-semibold mb-2 text-foreground group-hover:text-primary transition-colors duration-200 leading-tight"
     >
       {title}
     </h3>
-    <p class="text-muted-foreground mb-4 flex-1 description">
+    <p class="text-muted-foreground mb-4 flex-1 description leading-relaxed text-sm">
       {description}
     </p>
     <div class="mb-4 flex flex-wrap gap-2">
       {
         tags.map((tag) => (
-          <span class="px-2 py-1 bg-accent/70 backdrop-blur-sm text-xs font-medium text-accent-foreground rounded">
+          <span class="px-2 py-1 bg-primary/20 backdrop-blur-sm text-xs font-medium text-primary border border-primary/30 rounded-none">
             {tag}
           </span>
         ))
@@ -95,28 +95,58 @@ const { title, description, imageUrl, tags, repoUrl, liveUrl } = Astro.props;
 </div>
 
 <style>
-  /* Ensure project cards are properly tappable on mobile */
+  /* Enhanced mobile experience for project cards */
   @media (max-width: 768px) {
+    .project-card {
+      border: 1px solid hsla(var(--primary), 0.25) !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 0 15px hsla(var(--primary), 0.1) !important;
+    }
+    
     .project-card a {
       margin-right: 1rem;
-      background-color: rgba(0, 0, 0, 0.3);
-      border-radius: 4px;
-      border: 1px solid hsla(var(--primary), 0.2);
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4));
+      border-radius: 0;
+      border: 1px solid hsla(var(--primary), 0.3);
+      transition: all 0.2s ease;
     }
     
-    /* Always show the view project indicator on mobile */
+    .project-card a:active {
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6));
+      transform: scale(0.98);
+    }
+    
+    /* Always show indicators on mobile for better UX */
     .view-project-indicator {
-      opacity: 0.7 !important;
+      opacity: 0.8 !important;
+      font-weight: 500;
     }
     
-    /* Always show the project view icon on mobile */
     .project-view-indicator {
-      opacity: 0.7 !important;
+      opacity: 0.8 !important;
+      background: rgba(0, 0, 0, 0.7) !important;
+      border: 1px solid hsla(var(--primary), 0.3);
+    }
+    
+    .description {
+      line-height: 1.5 !important;
+    }
+    
+    h3 {
+      font-size: 1.125rem !important;
+      margin-bottom: 0.75rem !important;
     }
   }
   
-  /* Electric highlight effect when hovering */
+  /* Enhanced electric highlight effects */
   .project-card:hover {
-    box-shadow: 0 0 20px hsla(var(--primary), 0.4);
+    box-shadow: 0 0 30px hsla(var(--primary), 0.4), 0 8px 32px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+  }
+  
+  .project-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 0;
+    border: 1px solid hsla(var(--primary), 0.2);
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.7));
   }
 </style>

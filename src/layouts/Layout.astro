@@ -52,7 +52,7 @@ const siteBase = import.meta.env.BASE_URL || '/';
     class="min-h-screen overflow-x-hidden bg-gradient-to-br from-background to-background/90 text-foreground antialiased"
   >
     <!-- Loading progress bar -->
-    <div id="loading-container" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background">
+    <div id="loading-container" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background" style="display: none;">
       <div id="loading-bar-container" class="w-full md:w-1/2 max-w-xl h-2 mb-6 bg-accent/30">
         <div id="loading-bar" class="h-full bg-primary"></div>
       </div>
@@ -81,7 +81,7 @@ const siteBase = import.meta.env.BASE_URL || '/';
       <Sidebar />
       <main
         id="main-content"
-        class="flex-1 p-4 md:p-6 ml-0 md:ml-64 transition-all duration-300 ease-in-out relative z-10 overflow-x-hidden w-full opacity-0"
+        class="flex-1 p-3 md:p-6 ml-0 md:ml-64 transition-all duration-300 ease-in-out relative z-10 overflow-x-hidden w-full opacity-1"
       >
         <div
           class="transition-all duration-250 ease-in-out opacity-100 translate-y-0 mx-auto responsive-text"
@@ -118,6 +118,10 @@ const siteBase = import.meta.env.BASE_URL || '/';
             mainContent.style.opacity = "1";
           }
         } else {
+          // Show loading container for first-time visitors
+          if (loadingContainer) {
+            loadingContainer.style.display = "flex";
+          }
           // Set the flag for future visits
           localStorage.setItem('has_visited_before', 'true');
           
@@ -208,7 +212,7 @@ const siteBase = import.meta.env.BASE_URL || '/';
           }
         }
 
-        // Handle anchor links with smooth scrolling
+        // Handle anchor links with smooth scrolling (only for # links)
         document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
           anchor.addEventListener("click", (e) => {
             const href = anchor.getAttribute("href");
@@ -221,6 +225,15 @@ const siteBase = import.meta.env.BASE_URL || '/';
                 });
               }
             }
+          });
+        });
+
+        // Debug: Log all link clicks to see what's happening
+        document.querySelectorAll('a').forEach((link) => {
+          link.addEventListener("click", (e) => {
+            const href = link.getAttribute("href");
+            console.log('Link clicked:', href);
+            // Don't prevent default for regular navigation links
           });
         });
 

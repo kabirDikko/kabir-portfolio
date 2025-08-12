@@ -20,7 +20,7 @@ const { title, excerpt, date, readTime, category, slug, imageUrl } =
 
 <a href={`${siteBase}blog/${slug}`} class="block group touch-action-manipulation">
   <article
-    class="glass-card blog-card overflow-hidden transition-all duration-300 hover:translate-y-[-4px] hover:shadow-2xl"
+    class="glass-card blog-card overflow-hidden transition-all duration-300 hover:translate-y-[-4px] hover:shadow-[0_0_30px_hsla(var(--primary),0.3)] border-0"
   >
     {
       imageUrl && (
@@ -38,7 +38,7 @@ const { title, excerpt, date, readTime, category, slug, imageUrl } =
       <div
         class="flex items-center text-xs font-medium text-muted-foreground mb-3 space-x-2"
       >
-        <span class="inline-flex items-center backdrop-blur-sm px-2 py-1 rounded-full bg-accent/30">
+        <span class="inline-flex items-center backdrop-blur-sm px-2 py-1 bg-primary/20 border border-primary/30 rounded-none">
           <Folder size={12} class="w-3 h-3 mr-1" />
           {category}
         </span>
@@ -52,7 +52,7 @@ const { title, excerpt, date, readTime, category, slug, imageUrl } =
         </span>
       </div>
       <h3
-        class="text-xl font-bold mb-2 text-foreground group-hover:text-primary transition-colors duration-200"
+        class="text-xl font-bold mb-2 text-foreground group-hover:text-primary transition-colors duration-200 leading-tight"
       >
         {title}
       </h3>
@@ -69,24 +69,45 @@ const { title, excerpt, date, readTime, category, slug, imageUrl } =
 </a>
 
 <style>
-  /* Enhance mobile experience for blog cards */
+  /* Enhanced mobile experience for blog cards */
   @media (max-width: 768px) {
     .blog-card {
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+      border: 1px solid hsla(var(--primary), 0.25) !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 0 15px hsla(var(--primary), 0.1) !important;
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.7)) !important;
     }
     
     .blog-card:active {
-      transform: scale(0.98);
+      transform: scale(0.97);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4), 0 0 10px hsla(var(--primary), 0.2) !important;
     }
     
     a {
-      -webkit-tap-highlight-color: transparent;
+      -webkit-tap-highlight-color: hsla(var(--primary), 0.1);
       touch-action: manipulation;
     }
     
     p.description {
-      font-size: 0.9rem !important;
-      line-height: 1.4 !important;
+      font-size: 0.875rem !important;
+      line-height: 1.5 !important;
     }
+    
+    h3 {
+      font-size: 1.125rem !important;
+      margin-bottom: 0.75rem !important;
+    }
+  }
+  
+  /* Base blog card styling */
+  .blog-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 0;
+    border: 1px solid hsla(var(--primary), 0.2);
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.7));
+  }
+  
+  .blog-card:hover {
+    box-shadow: 0 0 30px hsla(var(--primary), 0.4), 0 8px 32px rgba(0, 0, 0, 0.3);
   }
 </style>
