@@ -6,7 +6,7 @@ author: "Kabir Dikko"
 category: "Research"
 tags: ["Accessibility", "Data Analysis", "Assistive Technology", "Research", "Rehabilitation Engineering"]
 featured: true
-image: "https://images.unsplash.com/photo-1581578017093-cd30fce4eeb7?q=80&w=1000&auto=format&fit=crop"
+image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?q=80&w=1000&auto=format&fit=crop"
 ---
 
 # Accessibility Research: Analyzing Electric Wheelchair Usage Data

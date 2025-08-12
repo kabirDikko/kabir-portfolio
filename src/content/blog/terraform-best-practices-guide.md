@@ -4,7 +4,7 @@ excerpt: "Discover the most effective patterns and practices for managing your i
 date: "2023-05-22"
 author: "Kabir Dikko"
 featured: false
-image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1000&auto=format&fit=crop" 
+image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1000&auto=format&fit=crop" 
 category: "Terraform"
 tags: ["Terraform", "Infrastructure as Code", "DevOps", "AWS", "Cloud"]
 ---

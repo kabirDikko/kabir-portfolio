@@ -3,7 +3,7 @@ title: "Data Mining with Lasers: 3D Point Cloud Object Classification"
 description: "A machine learning system for identifying and classifying objects in 3D point cloud data captured by LIDAR sensors."
 pubDate: 2023-08-05
 updatedDate: 2024-02-20
-heroImage: "https://images.unsplash.com/photo-1569396116180-210c182bedb8?q=80&w=1000&auto=format&fit=crop"
+heroImage: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=1000&auto=format&fit=crop"
 tags: ["Machine Learning", "LIDAR", "Python", "Point Cloud", "Computer Vision"]
 featured: true
 ---

@@ -2,7 +2,7 @@
 title: "Building an Enterprise-Grade Kubernetes Environment on AWS EKS"
 description: "Step-by-step overview of building a resilient, scalable Kubernetes infrastructure leveraging AWS EKS."
 pubDate: 2024-10-19
-heroImage: "https://images.unsplash.com/photo-1605902711622-cfb43c443796?q=80&w=1000&auto=format&fit=crop"
+heroImage: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1000&auto=format&fit=crop"
 tags: ["Kubernetes", "AWS", "EKS", "Cloud Infrastructure", "DevOps"]
 featured: true
 ---

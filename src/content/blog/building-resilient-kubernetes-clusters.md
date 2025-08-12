@@ -4,7 +4,7 @@ excerpt: "Learn how to design and implement highly available Kubernetes clusters
 date: "2023-06-15"
 author: "Kabir Dikko"
 featured: true
-image: "https://images.unsplash.com/photo-1667372393119-3d4c48d07fc9?q=80&w=1000&auto=format&fit=crop"
+image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1000&auto=format&fit=crop"
 category: "Kubernetes"
 tags: ["Kubernetes", "DevOps", "Cloud", "High Availability"]
 ---

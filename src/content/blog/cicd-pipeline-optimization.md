@@ -6,7 +6,7 @@ author: "Kabir Dikko"
 category: "CI/CD"
 tags: ["CI/CD", "DevOps", "Automation", "Jenkins", "GitHub Actions"]
 featured: true
-image: "https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?q=80&w=1000&auto=format&fit=crop"
+image: "https://images.unsplash.com/photo-1551808525-51a94da548ce?q=80&w=1000&auto=format&fit=crop"
 ---
 
 # CI/CD Pipeline Optimization: Strategies for Faster and More Reliable Deployments
